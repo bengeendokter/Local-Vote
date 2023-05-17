@@ -1,12 +1,19 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-import QRCode from 'react-qr-code'
+"use client"
+import * as React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useSearchParams } from 'react-router-dom';
+import Home from './home';
 
-export default function Home()
+const App = () =>
 {
+
   return (
-    <main className={styles.main}>
-      <QRCode value='https://bengeendokter.be/en'></QRCode>
-    </main>
-  )
+    <Router>
+      <Routes>
+        <Route path="/about" element={<h1>About</h1>} />
+        <Route path="/" element={<Home></Home>} />
+      </Routes>
+    </Router>
+  );
 }
+
+export default App;
