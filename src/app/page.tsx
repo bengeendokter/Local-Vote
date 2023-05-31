@@ -1,7 +1,7 @@
 "use client"
 import * as React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useSearchParams } from 'react-router-dom';
-import Home from './home';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './home/page';
 
 const App = () =>
 {
