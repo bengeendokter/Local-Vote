@@ -57,6 +57,8 @@ function Home()
 
     const onDragEnd = () => {};
 
+
+    // TODO watch https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
     return (
         <main className={styles.main}>
             <ul>
