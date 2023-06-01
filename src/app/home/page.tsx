@@ -2,8 +2,14 @@ import * as React from 'react';
 import QRCode from 'react-qr-code';
 import styles from './home.module.css';
 import { Link, useSearchParams } from 'react-router-dom';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-const Home = () =>
+const data =
+{
+    inputValue: ["be", 'nl', 'en']
+};
+
+function Home()
 {
     const [queryParams, setQueryParams] = useSearchParams();
     const [inputValue, setInputValue] = React.useState("");
@@ -49,10 +55,10 @@ const Home = () =>
         setInputValue("");
     }, [queryParams, setQueryParams]);
 
+    const onDragEnd = () => {};
+
     return (
         <main className={styles.main}>
-            <QRCode value={inputValue}></QRCode>
-            <input type='text' onChange={handleInputChange} value={inputValue} ></input>
             <ul>
                 <li>
                     <Link to="/">Home</Link>
@@ -61,7 +67,18 @@ const Home = () =>
                     <Link to="/about">About</Link>
                 </li>
             </ul>
-            <p>Value of term: {inputValue}</p>
+            <QRCode value={`http://localhost:3000/?inputValue=${inputValue}`}></QRCode>
+            <p>http://localhost:3000/?inputValue={inputValue}</p>
+            <input type='text' onChange={handleInputChange} value={inputValue} ></input>
+            <div>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId='countries'>
+                        {
+                            provided => ()
+                        }
+                    </Droppable>
+                </DragDropContext>
+            </div>
             <button onClick={handleReset}>Reset</button>
         </main>)
 }
