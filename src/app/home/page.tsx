@@ -2,17 +2,13 @@ import * as React from 'react';
 import QRCode from 'react-qr-code';
 import styles from './home.module.css';
 import { Link, useSearchParams } from 'react-router-dom';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-
-const data =
-{
-    inputValue: ["be", 'nl', 'en']
-};
+import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 
 function Home()
 {
     const [queryParams, setQueryParams] = useSearchParams();
     const [inputValue, setInputValue] = React.useState("");
+    const [countries, setCountries] = React.useState(["be", 'nl', 'en']);
 
     React.useEffect(() =>
     {
@@ -55,7 +51,25 @@ function Home()
         setInputValue("");
     }, [queryParams, setQueryParams]);
 
-    const onDragEnd = () => { };
+    const onDragEnd: OnDragEndResponder = (result) =>
+    {
+        const { destination, source, draggableId } = result;
+        if(!destination)
+        {
+            return;
+        }
+
+        if(destination.droppableId === source.droppableId && destination.index === source.index)
+        {
+            return;
+        }
+
+        const column = Array.from(countries);
+        column.splice(source.index, 1);
+        column.splice(destination.index, 0, draggableId);
+
+        setCountries(column);
+    };
 
 
     // TODO watch https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
@@ -77,16 +91,18 @@ function Home()
                     <Droppable droppableId='countries'>
                         {
                             (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
-                                {data.inputValue.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
-                                    {provided =>
-                                        (
-                                            <div
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                ref={provided.innerRef} >
-                                                <p>{country}</p>
-                                            </div>
-                                        )
+                                {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
+                                    {(provided, snapshot) =>
+                                    (
+                                        <div
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            ref={provided.innerRef} >
+                                            <p
+                                                style={{ backgroundColor: snapshot.isDragging ? "red" : "green" }}>
+                                                {country}</p>
+                                        </div>
+                                    )
                                     }
                                 </Draggable>)}
                                 {provided.placeholder}
