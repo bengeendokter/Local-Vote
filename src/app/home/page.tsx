@@ -2,7 +2,7 @@ import * as React from 'react';
 import QRCode from 'react-qr-code';
 import styles from './home.module.css';
 import { Link, useSearchParams } from 'react-router-dom';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 const data =
 {
@@ -55,7 +55,7 @@ function Home()
         setInputValue("");
     }, [queryParams, setQueryParams]);
 
-    const onDragEnd = () => {};
+    const onDragEnd = () => { };
 
 
     // TODO watch https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
@@ -76,7 +76,21 @@ function Home()
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId='countries'>
                         {
-                            provided => ()
+                            (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
+                                {data.inputValue.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
+                                    {provided =>
+                                        (
+                                            <div
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                ref={provided.innerRef} >
+                                                <p>{country}</p>
+                                            </div>
+                                        )
+                                    }
+                                </Draggable>)}
+                                {provided.placeholder}
+                            </div>)
                         }
                     </Droppable>
                 </DragDropContext>
