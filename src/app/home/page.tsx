@@ -4,11 +4,13 @@ import styles from './home.module.css';
 import { Link, useSearchParams } from 'react-router-dom';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 
+const defaultCountries = ["Belgium", 'Sweden', 'Finland'];
+
 function Home()
 {
     const [queryParams, setQueryParams] = useSearchParams();
     const [inputValue, setInputValue] = React.useState("");
-    const [countries, setCountries] = React.useState(["be", 'nl', 'en']);
+    const [countries, setCountries] = React.useState<string[]>([]);
 
     React.useEffect(() =>
     {
@@ -31,12 +33,14 @@ function Home()
             return inputValueQueryParam;
         })();
 
-        setInputValue(InitialInputValue ?? "");
+        const nonNullInputValue = InitialInputValue === null ? defaultCountries : JSON.parse(InitialInputValue);
+
+        setInputValue(JSON.stringify(nonNullInputValue));
+        setCountries(nonNullInputValue);
     }, [queryParams, setQueryParams]);
 
-    const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>
+    const updateInputValue = React.useCallback((newInputValue: string) =>
     {
-        const newInputValue = event.target.value;
         setInputValue(newInputValue);
         localStorage.setItem("inputValue", newInputValue);
 
@@ -48,71 +52,70 @@ function Home()
         localStorage.removeItem("inputValue");
         queryParams.delete("inputValue");
         setQueryParams(queryParams);
-        setInputValue("");
-    }, [queryParams, setQueryParams]);
+        setInputValue(JSON.stringify(defaultCountries));
+        setCountries(defaultCountries);
+}, [queryParams, setQueryParams]);
 
-    const onDragEnd: OnDragEndResponder = (result) =>
+const onDragEnd: OnDragEndResponder = (result) =>
+{
+    const { destination, source, draggableId } = result;
+    if(!destination)
     {
-        const { destination, source, draggableId } = result;
-        if(!destination)
-        {
-            return;
-        }
+        return;
+    }
 
-        if(destination.droppableId === source.droppableId && destination.index === source.index)
-        {
-            return;
-        }
+    if(destination.droppableId === source.droppableId && destination.index === source.index)
+    {
+        return;
+    }
 
-        const column = Array.from(countries);
-        column.splice(source.index, 1);
-        column.splice(destination.index, 0, draggableId);
+    const column = Array.from(countries);
+    column.splice(source.index, 1);
+    column.splice(destination.index, 0, draggableId);
 
-        setCountries(column);
-    };
+    setCountries(column);
+    updateInputValue(JSON.stringify(column));
+};
 
-
-    // TODO watch https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
-    return (
-        <main className={styles.main}>
-            <ul>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
-                <li>
-                    <Link to="/about">About</Link>
-                </li>
-            </ul>
-            <QRCode value={`http://localhost:3000/?inputValue=${inputValue}`}></QRCode>
-            <p>http://localhost:3000/?inputValue={inputValue}</p>
-            <input type='text' onChange={handleInputChange} value={inputValue} ></input>
-            <div>
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId='countries'>
-                        {
-                            (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
-                                {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
-                                    {(provided, snapshot) =>
-                                    (
-                                        <div
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            ref={provided.innerRef} >
-                                            <p
-                                                style={{ backgroundColor: snapshot.isDragging ? "red" : "green" }}>
-                                                {country}</p>
-                                        </div>
-                                    )
-                                    }
-                                </Draggable>)}
-                                {provided.placeholder}
-                            </div>)
-                        }
-                    </Droppable>
-                </DragDropContext>
-            </div>
-            <button onClick={handleReset}>Reset</button>
-        </main>)
+return (
+    <main className={styles.main}>
+        <ul>
+            <li>
+                <Link to="/">Home</Link>
+            </li>
+            <li>
+                <Link to="/about">About</Link>
+            </li>
+        </ul>
+        <QRCode value={`http://localhost:3000/?inputValue=${inputValue}`}></QRCode>
+        <p>http://localhost:3000/?inputValue={inputValue}</p>
+        <div>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId='countries'>
+                    {
+                        (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
+                            {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
+                                {(provided, snapshot) =>
+                                (
+                                    <div
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        ref={provided.innerRef} >
+                                        <p
+                                            style={{ backgroundColor: snapshot.isDragging ? "red" : "green" }}>
+                                            {country}</p>
+                                    </div>
+                                )
+                                }
+                            </Draggable>)}
+                            {provided.placeholder}
+                        </div>)
+                    }
+                </Droppable>
+            </DragDropContext>
+        </div>
+        <button onClick={handleReset}>Reset</button>
+    </main>)
 }
 
 export default Home;
