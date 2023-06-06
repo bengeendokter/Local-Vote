@@ -7,8 +7,6 @@ import QrScanner from "qr-scanner";
 
 const defaultCountries = ["Belgium", 'Sweden', 'Finland'];
 
-const dummyUrl = 'http://localhost:3000/?token=["Belgium","Finland","Sweden"]'
-
 function Home()
 {
     const [queryParams, setQueryParams] = useSearchParams();
@@ -18,16 +16,30 @@ function Home()
     const [scanner, setScanner] = React.useState<QrScanner>();
     const [scannerRunning, setScannerRunning] = React.useState(false);
 
-    let token: string | null;
-    try{
-        const url = new URL(dummyUrl);
-        token = url.searchParams.get('token');
-    }
-    catch(error)
+    const updateInputValue = React.useCallback((newInputValue: string) =>
     {
-        token = null;
-    }
-    console.log("token: ", token === null ? [] : JSON.parse(token));
+        setInputValue(newInputValue);
+        localStorage.setItem("inputValue", newInputValue);
+
+        setQueryParams({ inputValue: newInputValue });
+    }, [setQueryParams]);
+
+    const setQrCodeToInputValue = React.useCallback((qrCodeString: string) => {
+        let qrCodeInputValue: string | null;
+        try{
+            const url = new URL(qrCodeString);
+            qrCodeInputValue = url.searchParams.get('inputValue');
+        }
+        catch(error)
+        {
+            qrCodeInputValue = null;
+        }
+        
+        if(qrCodeInputValue !== null)
+        {
+            updateInputValue(qrCodeInputValue);
+        }
+    }, [updateInputValue]);
 
     React.useEffect(() =>
     {
@@ -39,26 +51,12 @@ function Home()
 
         const qrScanner = new QrScanner(videoElement, result =>
         {
-            console.log(result.data);
+            setQrCodeToInputValue(result.data);
             qrScanner.stop();
         }, {});
 
         setScanner(qrScanner);
-    }, [setScanner]);
-
-    const toggleScanner = React.useCallback(() =>
-    {
-        if(scannerRunning)
-        {
-            scanner?.stop();
-        }
-        else
-        {
-            scanner?.start()
-        }
-        setScannerRunning(!scannerRunning);
-    }, [scanner, scannerRunning]);
-
+    }, [setQrCodeToInputValue, setScanner]);
 
     React.useEffect(() =>
     {
@@ -87,13 +85,18 @@ function Home()
         setCountries(nonNullInputValue);
     }, [queryParams, setQueryParams]);
 
-    const updateInputValue = React.useCallback((newInputValue: string) =>
+    const toggleScanner = React.useCallback(() =>
     {
-        setInputValue(newInputValue);
-        localStorage.setItem("inputValue", newInputValue);
-
-        setQueryParams({ inputValue: newInputValue });
-    }, [setQueryParams]);
+        if(scannerRunning)
+        {
+            scanner?.stop();
+        }
+        else
+        {
+            scanner?.start()
+        }
+        setScannerRunning(!scannerRunning);
+    }, [scanner, scannerRunning]);
 
     const handleReset = React.useCallback(() =>
     {
@@ -129,6 +132,8 @@ function Home()
     {
         toggleScanner();
     }, [toggleScanner]);
+
+    console.log("render");
 
     return (
         <main className={styles.main}>
