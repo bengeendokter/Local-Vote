@@ -34,7 +34,7 @@ function Home()
             const newPoints = oldPoints + (SCORE_MAP.get(index) ?? 0);
             pointsMap.set(country, newPoints);
         }))
-        
+
         const rankingArray = Array.from(pointsMap.entries()).sort(([, points1], [, points2]) => points2 - points1);
         alert(rankingArray);
     }, [total]);
@@ -186,7 +186,7 @@ function Home()
         toggleScanner();
     }, [toggleScanner]);
 
-    const handleCalcultateTotal = React.useCallback(() =>
+    const handleCalculateTotal = React.useCallback(() =>
     {
         calculateTotalRanking();
     }, [calculateTotalRanking]);
@@ -234,7 +234,7 @@ function Home()
             <br/>
             <button onClick={handleToggleScanner}>Toggle Scanner</button>
             <br/>
-            <button onClick={handleCalcultateTotal}>Calculate Total</button>
+            <button onClick={handleCalculateTotal}>Calculate Total</button>
         </main>)
 }
 
