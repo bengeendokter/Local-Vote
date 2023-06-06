@@ -18,12 +18,19 @@ function Home()
 
     React.useEffect(() =>
     {
-        if(videoRef.current === null)
+        const videoElement = videoRef.current;
+        if(videoElement === null)
         {
             return;
         }
 
-        return setScanner(new QrScanner(videoRef.current, result => console.log(result.data), {}));
+        const qrScanner = new QrScanner(videoElement, result =>
+        {
+            console.log(result.data);
+            qrScanner.stop();
+        }, {});
+
+        setScanner(qrScanner);
     }, [setScanner]);
 
     const toggleScanner = React.useCallback(() =>
