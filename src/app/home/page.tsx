@@ -18,9 +18,16 @@ function Home()
     const [scanner, setScanner] = React.useState<QrScanner>();
     const [scannerRunning, setScannerRunning] = React.useState(false);
 
-    const url =new URL(dummyUrl);
-    const token = url.searchParams.get('token');
-    console.log("token: ", token === null ? [] :JSON.parse(token));
+    let token: string | null;
+    try{
+        const url = new URL(dummyUrl);
+        token = url.searchParams.get('token');
+    }
+    catch(error)
+    {
+        token = null;
+    }
+    console.log("token: ", token === null ? [] : JSON.parse(token));
 
     React.useEffect(() =>
     {
