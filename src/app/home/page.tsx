@@ -5,7 +5,9 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import QrScanner from "qr-scanner";
 
-const defaultCountries = ["Belgium", 'Sweden', 'Finland'];
+const DEFAULT_COUNTRIES = ["Belgium", 'Sweden', 'Finland'];
+const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
+const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
 
 function Home()
 {
@@ -17,7 +19,28 @@ function Home()
     const [scannerRunning, setScannerRunning] = React.useState(false);
     const [total, setTotal] = React.useState<string[][]>([]);
 
-    const setInitialTotal = React.useCallback(() => {
+    const calculateTotalRanking = React.useCallback(() =>
+    {
+        const pointsMap = new Map<string, number>((total[0] ?? []).map((country) => [country, 0]));
+
+        total.forEach((ranking) => ranking.forEach((country, index) =>
+        {
+            if(index >= 10)
+            {
+                return;
+            }
+
+            const oldPoints = pointsMap.get(country) ?? 0;
+            const newPoints = oldPoints + (SCORE_MAP.get(index) ?? 0);
+            pointsMap.set(country, newPoints);
+        }))
+        
+        const rankingArray = Array.from(pointsMap.entries()).sort(([, points1], [, points2]) => points2 - points1);
+        alert(rankingArray);
+    }, [total]);
+
+    const setInitialTotal = React.useCallback(() =>
+    {
         setTotal([countries]);
     }, [countries]);
 
@@ -29,9 +52,20 @@ function Home()
         setQueryParams({ inputValue: newInputValue });
     }, [setQueryParams]);
 
-    const addQrCodeToTotal = React.useCallback((qrCodeString: string) => {
+    const isUsingCurrentTemplate = React.useCallback((inputValueList: string[]) =>
+    {
+        const currentTemplateSet = new Set(countries);
+        const inputValueSet = new Set(inputValueList);
+        const joinedSet = new Set(countries.concat(inputValueList));
+
+        return currentTemplateSet.size === inputValueSet.size && joinedSet.size === currentTemplateSet.size;
+    }, [countries]);
+
+    const addQrCodeToTotal = React.useCallback((qrCodeString: string) =>
+    {
         let qrCodeInputValue: string | null;
-        try{
+        try
+        {
             const url = new URL(qrCodeString);
             qrCodeInputValue = url.searchParams.get('inputValue');
         }
@@ -39,18 +73,25 @@ function Home()
         {
             qrCodeInputValue = null;
         }
-        
+
         if(qrCodeInputValue !== null)
         {
-            const nonNullQrCodeInputValue = qrCodeInputValue;
+            const inputValueList = JSON.parse(qrCodeInputValue);
+
+            if(!isUsingCurrentTemplate(inputValueList))
+            {
+                alert("not using current template");
+                return;
+            }
+
             setTotal((oldTotal) =>
             {
                 const newTotal = Array.from(oldTotal);
-                newTotal.push(JSON.parse(nonNullQrCodeInputValue));
+                newTotal.push(inputValueList);
                 return newTotal;
             });
         }
-    }, []);
+    }, [isUsingCurrentTemplate]);
 
     React.useEffect(() =>
     {
@@ -62,8 +103,8 @@ function Home()
 
         const qrScanner = new QrScanner(videoElement, result =>
         {
-            addQrCodeToTotal(result.data);
             alert("code is scanned");
+            addQrCodeToTotal(result.data);
         }, {});
 
         setScanner(qrScanner);
@@ -90,7 +131,7 @@ function Home()
             return inputValueQueryParam;
         })();
 
-        const nonNullInputValue = InitialInputValue === null ? defaultCountries : JSON.parse(InitialInputValue);
+        const nonNullInputValue = InitialInputValue === null ? DEFAULT_COUNTRIES : JSON.parse(InitialInputValue);
 
         setInputValue(JSON.stringify(nonNullInputValue));
         setCountries(nonNullInputValue);
@@ -115,8 +156,8 @@ function Home()
         localStorage.removeItem("inputValue");
         queryParams.delete("inputValue");
         setQueryParams(queryParams);
-        setInputValue(JSON.stringify(defaultCountries));
-        setCountries(defaultCountries);
+        setInputValue(JSON.stringify(DEFAULT_COUNTRIES));
+        setCountries(DEFAULT_COUNTRIES);
     }, [queryParams, setQueryParams]);
 
     const onDragEnd: OnDragEndResponder = (result) =>
@@ -144,6 +185,11 @@ function Home()
     {
         toggleScanner();
     }, [toggleScanner]);
+
+    const handleCalcultateTotal = React.useCallback(() =>
+    {
+        calculateTotalRanking();
+    }, [calculateTotalRanking]);
 
     return (
         <main className={styles.main}>
@@ -183,8 +229,12 @@ function Home()
                     </Droppable>
                 </DragDropContext>
             </div>
+            <br/>
             <button onClick={handleReset}>Reset</button>
+            <br/>
             <button onClick={handleToggleScanner}>Toggle Scanner</button>
+            <br/>
+            <button onClick={handleCalcultateTotal}>Calculate Total</button>
         </main>)
 }
 
