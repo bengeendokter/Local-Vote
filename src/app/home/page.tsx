@@ -17,6 +17,10 @@ function Home()
     const [scannerRunning, setScannerRunning] = React.useState(false);
     const [total, setTotal] = React.useState<string[][]>([]);
 
+    const setInitialTotal = React.useCallback(() => {
+        setTotal([countries]);
+    }, [countries]);
+
     const updateInputValue = React.useCallback((newInputValue: string) =>
     {
         setInputValue(newInputValue);
@@ -38,15 +42,15 @@ function Home()
         
         if(qrCodeInputValue !== null)
         {
-            console.log("total before from array", total);
-            const newTotal = Array.from(total);
-            console.log("newTotal from total", newTotal);
-            newTotal.push(JSON.parse(qrCodeInputValue));
-            setTotal(newTotal);
-            console.log("newTotal", newTotal);
-            console.log("total",total);
+            const nonNullQrCodeInputValue = qrCodeInputValue;
+            setTotal((oldTotal) =>
+            {
+                const newTotal = Array.from(oldTotal);
+                newTotal.push(JSON.parse(nonNullQrCodeInputValue));
+                return newTotal;
+            });
         }
-    }, [total]);
+    }, []);
 
     React.useEffect(() =>
     {
@@ -94,22 +98,17 @@ function Home()
 
     const toggleScanner = React.useCallback(() =>
     {
-        console.log("togglescanner");
         if(scannerRunning)
         {
             scanner?.stop();
-            console.log("scanner", scanner);
-            console.log("stop");
         }
         else
         {
-            setTotal([countries]);
-            console.log("countries", countries);
+            setInitialTotal();
             scanner?.start()
-            console.log("start");
         }
         setScannerRunning(!scannerRunning);
-    }, [countries, scanner, scannerRunning]);
+    }, [scanner, scannerRunning, setInitialTotal]);
 
     const handleReset = React.useCallback(() =>
     {
@@ -145,8 +144,6 @@ function Home()
     {
         toggleScanner();
     }, [toggleScanner]);
-
-    console.log("render");
 
     return (
         <main className={styles.main}>
