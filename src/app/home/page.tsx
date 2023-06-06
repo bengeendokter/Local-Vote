@@ -7,6 +7,8 @@ import QrScanner from "qr-scanner";
 
 const defaultCountries = ["Belgium", 'Sweden', 'Finland'];
 
+const dummyUrl = 'http://localhost:3000/?token=["Belgium","Finland","Sweden"]'
+
 function Home()
 {
     const [queryParams, setQueryParams] = useSearchParams();
@@ -15,6 +17,10 @@ function Home()
     const videoRef = React.useRef<HTMLVideoElement>(null);
     const [scanner, setScanner] = React.useState<QrScanner>();
     const [scannerRunning, setScannerRunning] = React.useState(false);
+
+    const url =new URL(dummyUrl);
+    const token = url.searchParams.get('token');
+    console.log("token: ", token === null ? [] :JSON.parse(token));
 
     React.useEffect(() =>
     {
