@@ -15,6 +15,7 @@ function Home()
     const videoRef = React.useRef<HTMLVideoElement>(null);
     const [scanner, setScanner] = React.useState<QrScanner>();
     const [scannerRunning, setScannerRunning] = React.useState(false);
+    const [total, setTotal] = React.useState<string[][]>([]);
 
     const updateInputValue = React.useCallback((newInputValue: string) =>
     {
@@ -24,7 +25,7 @@ function Home()
         setQueryParams({ inputValue: newInputValue });
     }, [setQueryParams]);
 
-    const setQrCodeToInputValue = React.useCallback((qrCodeString: string) => {
+    const addQrCodeToTotal = React.useCallback((qrCodeString: string) => {
         let qrCodeInputValue: string | null;
         try{
             const url = new URL(qrCodeString);
@@ -37,9 +38,15 @@ function Home()
         
         if(qrCodeInputValue !== null)
         {
-            updateInputValue(qrCodeInputValue);
+            console.log("total before from array", total);
+            const newTotal = Array.from(total);
+            console.log("newTotal from total", newTotal);
+            newTotal.push(JSON.parse(qrCodeInputValue));
+            setTotal(newTotal);
+            console.log("newTotal", newTotal);
+            console.log("total",total);
         }
-    }, [updateInputValue]);
+    }, [total]);
 
     React.useEffect(() =>
     {
@@ -51,12 +58,12 @@ function Home()
 
         const qrScanner = new QrScanner(videoElement, result =>
         {
-            setQrCodeToInputValue(result.data);
-            qrScanner.stop();
+            addQrCodeToTotal(result.data);
+            alert("code is scanned");
         }, {});
 
         setScanner(qrScanner);
-    }, [setQrCodeToInputValue, setScanner]);
+    }, [addQrCodeToTotal, setScanner]);
 
     React.useEffect(() =>
     {
@@ -87,16 +94,22 @@ function Home()
 
     const toggleScanner = React.useCallback(() =>
     {
+        console.log("togglescanner");
         if(scannerRunning)
         {
             scanner?.stop();
+            console.log("scanner", scanner);
+            console.log("stop");
         }
         else
         {
+            setTotal([countries]);
+            console.log("countries", countries);
             scanner?.start()
+            console.log("start");
         }
         setScannerRunning(!scannerRunning);
-    }, [scanner, scannerRunning]);
+    }, [countries, scanner, scannerRunning]);
 
     const handleReset = React.useCallback(() =>
     {
