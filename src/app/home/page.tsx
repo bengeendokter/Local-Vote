@@ -5,7 +5,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import QrScanner from "qr-scanner";
 
-const DEFAULT_COUNTRIES = ["Belgium", 'Sweden', 'Finland'];
+const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", '🇸🇪 Sweden', '🇫🇮 Finland'];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
 
@@ -25,7 +25,7 @@ function Home()
 
         total.forEach((ranking) => ranking.forEach((country, index) =>
         {
-            if(index >= 10)
+            if(index >= SCORE_VALUES.length)
             {
                 return;
             }
@@ -193,48 +193,48 @@ function Home()
 
     return (
         <main className={styles.main}>
-            <ul>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
-                <li>
-                    <Link to="/about">About</Link>
-                </li>
-            </ul>
-            <video ref={videoRef} ></video>
-            <QRCode value={`http://localhost:3000/?inputValue=${inputValue}`}></QRCode>
+                <ul>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/about">About</Link>
+                    </li>
+                </ul>
+                <video ref={videoRef} ></video>
+                <QRCode value={`http://localhost:3000/?inputValue=${inputValue}`}></QRCode>
             <p>http://localhost:3000/?inputValue={inputValue}</p>
-            <div>
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId='countries'>
-                        {
-                            (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
-                                {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
-                                    {(provided, snapshot) =>
-                                    (
-                                        <div
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            ref={provided.innerRef} >
-                                            <p
-                                                style={{ backgroundColor: snapshot.isDragging ? "red" : "green" }}>
-                                                {country}</p>
-                                        </div>
-                                    )
-                                    }
-                                </Draggable>)}
-                                {provided.placeholder}
-                            </div>)
-                        }
-                    </Droppable>
-                </DragDropContext>
-            </div>
+                <div>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId='countries'>
+                            {
+                                (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
+                                    {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
+                                        {(provided, snapshot) =>
+                                        (
+                                            <div
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                ref={provided.innerRef} >
+                                                <p
+                                                    style={{ backgroundColor: snapshot.isDragging ? "red" : "green" }}>
+                                                    {country}</p>
+                                            </div>
+                                        )
+                                        }
+                                    </Draggable>)}
+                                    {provided.placeholder}
+                                </div>)
+                            }
+                        </Droppable>
+                    </DragDropContext>
+                </div>
             <br/>
-            <button onClick={handleReset}>Reset</button>
+                <button onClick={handleReset}>Reset</button>
             <br/>
-            <button onClick={handleToggleScanner}>Toggle Scanner</button>
+                <button onClick={handleToggleScanner}>Toggle Scanner</button>
             <br/>
-            <button onClick={handleCalculateTotal}>Calculate Total</button>
+                <button onClick={handleCalculateTotal}>Calculate Total</button>
         </main>)
 }
 
