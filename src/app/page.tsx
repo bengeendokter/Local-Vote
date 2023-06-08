@@ -219,7 +219,7 @@ function Home()
                                                 {...provided.dragHandleProps}
                                                 ref={provided.innerRef} >
                                                 <p
-                                                    // style={{ backgroundColor: snapshot.isDragging ? "red" : "green" }}
+                                                    style={{ backgroundColor: snapshot.isDragging ? "red" : "green" }}
                                                     >
                                                     {country}
                                                     </p>
