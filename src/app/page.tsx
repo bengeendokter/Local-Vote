@@ -17,7 +17,6 @@ interface QueryParams
 function Home()
 {
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
-    const [inputValue, setInputValue] = React.useState("");
     const [countries, setCountries] = React.useState<string[]>([]);
 
     const calculateTotalRanking = React.useCallback(() =>
@@ -42,7 +41,6 @@ function Home()
 
     const updateInputValue = React.useCallback((newInputValue: string[]) =>
     {
-        setInputValue(JSON.stringify(newInputValue));
         localStorage.setItem("inputValue", JSON.stringify(newInputValue));
 
         setQueryParams({ inputValue: newInputValue });
@@ -71,7 +69,6 @@ function Home()
         })();
 
         const nonNullInputValue = initialInputValue === null ? DEFAULT_COUNTRIES : initialInputValue;
-        setInputValue(JSON.stringify(nonNullInputValue));
         setCountries(nonNullInputValue);
     }, [queryParams, setQueryParams]);
 
@@ -79,7 +76,6 @@ function Home()
     {
         localStorage.removeItem("inputValue");
         setQueryParams({ inputValue: [] })
-        setInputValue(JSON.stringify(DEFAULT_COUNTRIES));
         setCountries(DEFAULT_COUNTRIES);
     }, [setQueryParams]);
 
@@ -95,8 +91,6 @@ function Home()
         {
             return;
         }
-
-
 
         setCountries((countries) =>
         {
@@ -115,7 +109,6 @@ function Home()
 
     return (
         <main className={styles.main}>
-            <p>http://localhost:3000/?inputValue={inputValue}</p>
             <div>
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId='countries'>
@@ -129,7 +122,7 @@ function Home()
                                             {...provided.dragHandleProps}
                                             ref={provided.innerRef} >
                                             <p
-                                                style={{ backgroundColor: snapshot.isDragging ? "red" : "green" }}
+                                                className={[styles.country_list_item, snapshot.isDragging ? styles.active : ""].join(" ")}
                                             >
                                                 {country}
                                             </p>
@@ -143,9 +136,7 @@ function Home()
                     </Droppable>
                 </DragDropContext>
             </div>
-            <br />
             <button onClick={handleReset}>Reset</button>
-            <br />
             <button onClick={handleCalculateTotal}>Calculate Total</button>
         </main>)
 }

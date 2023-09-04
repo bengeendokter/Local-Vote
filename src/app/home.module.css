@@ -1,9 +1,21 @@
-.main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
-  font-family: 'Twemoji', sans-serif;
+.main
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6rem;
+    min-height: 100vh;
+    font-family: 'Twemoji', sans-serif;
+}
+
+.country_list_item
+{
+    --list-item-color: var(--clr-interact);
+    background-color: var(--list-item-color);
+}
+
+.active
+{
+    --list-item-color: var(--clr-active);
 }

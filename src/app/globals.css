@@ -1,5 +1,13 @@
 :root {
+ --clr-text: hsl(236, 21%, 14%);
+ --clr-background: hsl(67, 62%, 95%);
+ --clr-interact: hsl(54, 83%, 67%);
+ --clr-active: hsl(240, 100%, 99%);
+}
 
+html{
+    background-color: var(--clr-background);
+    color: var(--clr-text);
 }
 
 @font-face {
