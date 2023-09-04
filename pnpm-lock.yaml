@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -26,9 +26,6 @@ dependencies:
   next:
     specifier: 13.4.2
     version: 13.4.2(react-dom@18.2.0)(react@18.2.0)
-  qr-scanner:
-    specifier: ^1.4.2
-    version: 1.4.2
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -38,9 +35,6 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
-  react-qr-code:
-    specifier: ^2.0.11
-    version: 2.0.11(react@18.2.0)
   typescript:
     specifier: 5.0.4
     version: 5.0.4
@@ -258,10 +252,6 @@ packages:
 
   /@types/node@20.1.7:
     resolution: {integrity: sha512-WCuw/o4GSwDGMoonES8rcvwsig77dGCMbZDrZr2x4ZZiNW4P/gcoZXe/0twgtobcTkmg9TuKflxYL/DuwDyJzg==}
-    dev: false
-
-  /@types/offscreencanvas@2019.7.0:
-    resolution: {integrity: sha512-PGcyveRIpL1XIqK8eBsmRBt76eFgtzuPiSTyKHZxnGemp2yzGzWpjYKAfK3wIMiU7eH+851yEpiuP8JZerTmWg==}
     dev: false
 
   /@types/prop-types@15.7.5:
@@ -1974,16 +1964,6 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /qr-scanner@1.4.2:
-    resolution: {integrity: sha512-kV1yQUe2FENvn59tMZW6mOVfpq9mGxGf8l6+EGaXUOd4RBOLg7tRC83OrirM5AtDvZRpdjdlXURsHreAOSPOUw==}
-    dependencies:
-      '@types/offscreencanvas': 2019.7.0
-    dev: false
-
-  /qr.js@0.0.0:
-    resolution: {integrity: sha512-c4iYnWb+k2E+vYpRimHqSu575b1/wKl4XFeJGpFmrJQz5I88v9aY2czh7s0w36srfCM1sXgC/xpoJz5dJfq+OQ==}
-    dev: false
-
   /queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: false
@@ -2027,20 +2007,6 @@ packages:
 
   /react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
-    dev: false
-
-  /react-qr-code@2.0.11(react@18.2.0):
-    resolution: {integrity: sha512-P7mvVM5vk9NjGdHMt4Z0KWeeJYwRAtonHTghZT2r+AASinLUUKQ9wfsGH2lPKsT++gps7hXmaiMGRvwTDEL9OA==}
-    peerDependencies:
-      react: ^16.x || ^17.x || ^18.x
-      react-native-svg: '*'
-    peerDependenciesMeta:
-      react-native-svg:
-        optional: true
-    dependencies:
-      prop-types: 15.8.1
-      qr.js: 0.0.0
-      react: 18.2.0
     dev: false
 
   /react-redux@7.2.9(react-dom@18.2.0)(react@18.2.0):
