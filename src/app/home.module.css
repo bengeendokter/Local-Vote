@@ -81,9 +81,9 @@
 {
     flex: 0 0 auto;
     text-align: center;
-    margin-block: 1em;
     height: 100%;
     aspect-ratio: 1;
+    font-size: 1.5rem
 }
 
 .country_input

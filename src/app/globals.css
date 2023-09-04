@@ -27,6 +27,11 @@ div
     width: 100%;
 }
 
+input
+{
+    font-family: inherit;
+}
+
 @font-face
 {
     font-family: 'Twemoji';

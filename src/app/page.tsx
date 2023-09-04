@@ -129,7 +129,7 @@ function Home()
                                                 <button className={styles.country_list_item_button} >B</button>
                                                 <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
                                                     {index + 1}.</p>
-                                                    <input className={styles.emoji_input} type='text' maxLength={1} size={1}></input>
+                                                    <input className={styles.emoji_input} type='text'></input>
                                                     <input className={styles.country_input} type='text' value={country} ></input>
                                                     <span className={styles.country_drag_handle} >=</span>
                                                 </div>
