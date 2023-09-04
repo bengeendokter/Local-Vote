@@ -1,18 +1,66 @@
 .main
 {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6rem;
     min-height: 100vh;
     font-family: 'Twemoji', sans-serif;
 }
 
+.country_list
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-wrap: nowrap;
+    margin-inline: 0.3em;
+}
+
 .country_list_item
 {
+    display: block;
+}
+
+.country_list_item_content
+{
     --list-item-color: var(--clr-interact);
+    display: flex;
+    gap: 12px;
+    height: 48px;
+}
+
+.country_list_item_button
+{
     background-color: var(--list-item-color);
+    border: 1px solid var(--clr-text);
+    aspect-ratio: 1;
+}
+
+.country_list_item:first-of-type .country_list_item_button
+{
+    border-radius: 12px 0px 0px 0px;
+}
+
+.country_list_item:last-of-type .country_list_item_button
+{
+    border-radius: 0px 0px 0px 12px;
+}
+
+.country_list_item_edit
+{
+    background-color: var(--list-item-color);
+    border: 1px solid var(--clr-text);
+    display: flex;
+    align-items: center;
+    padding: 5px 10px 5px 5px;
+    flex-wrap: nowrap;
+}
+
+.country_list_item:first-of-type .country_list_item_edit
+{
+    border-radius: 0px 12px 0px 0px;
+}
+
+.country_list_item:last-of-type .country_list_item_edit
+{
+    border-radius: 0px 0px 12px 0px;
 }
 
 .active

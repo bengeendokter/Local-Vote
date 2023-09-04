@@ -107,38 +107,45 @@ function Home()
         calculateTotalRanking();
     }, [calculateTotalRanking]);
 
-    return (
+    return (<>
+        <header>
+            <h1>Semi Final 1</h1>
+        </header>
         <main className={styles.main}>
-            <div>
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId='countries'>
                         {
                             (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
-                                {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
-                                    {(provided, snapshot) =>
-                                    (
-                                        <div
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            ref={provided.innerRef} >
-                                            <p
-                                                className={[styles.country_list_item, snapshot.isDragging ? styles.active : ""].join(" ")}
-                                            >
-                                                {country}
-                                            </p>
-                                        </div>
-                                    )
-                                    }
-                                </Draggable>)}
+                                <ol className={styles.country_list}>
+                                    {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
+                                        {(provided, snapshot) =>
+                                        (
+                                            <li
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                ref={provided.innerRef}
+                                                className={styles.country_list_item} >
+                                                    <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
+                                                <button className={styles.country_list_item_button} >B</button>
+                                                <div className={styles.country_list_item_edit} ><p>
+                                                   {index + 1}. {country}
+                                                </p></div>
+                                                </div>
+
+                                            </li>
+                                        )
+                                        }
+                                    </Draggable>)}
+                                </ol>
+
                                 {provided.placeholder}
                             </div>)
                         }
                     </Droppable>
                 </DragDropContext>
-            </div>
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
-        </main>)
+        </main></>)
 }
 
 export default Home;
