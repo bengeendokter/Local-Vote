@@ -24,6 +24,7 @@
     display: flex;
     gap: 12px;
     height: 48px;
+    --input-height: 41px;
 }
 
 .country_list_item_button
@@ -49,8 +50,10 @@
     border: 1px solid var(--clr-text);
     display: flex;
     align-items: center;
-    padding: 5px 10px 5px 5px;
+    padding: 0px 10px 0px 5px;
     flex-wrap: nowrap;
+    gap: 0.4em;
+    padding-block: 0.4em;
 }
 
 .country_list_item:first-of-type .country_list_item_edit
@@ -66,4 +69,31 @@
 .active
 {
     --list-item-color: var(--clr-active);
+}
+
+.rank_number
+{
+    width: 2.3ch;
+    text-align: end;
+}
+
+.emoji_input
+{
+    flex: 0 0 auto;
+    text-align: center;
+    margin-block: 1em;
+    height: 100%;
+    aspect-ratio: 1;
+}
+
+.country_input
+{
+    width: inherit;
+    height: 100%;
+}
+
+.country_drag_handle
+{
+    width: 2.8em;
+    text-align: center;
 }

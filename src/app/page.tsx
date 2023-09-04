@@ -112,37 +112,40 @@ function Home()
             <h1>Semi Final 1</h1>
         </header>
         <main className={styles.main}>
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId='countries'>
-                        {
-                            (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
-                                <ol className={styles.country_list}>
-                                    {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
-                                        {(provided, snapshot) =>
-                                        (
-                                            <li
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                ref={provided.innerRef}
-                                                className={styles.country_list_item} >
-                                                    <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId='countries'>
+                    {
+                        (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
+                            <ol className={styles.country_list}>
+                                {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
+                                    {(provided, snapshot) =>
+                                    (
+                                        <li
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            ref={provided.innerRef}
+                                            className={styles.country_list_item} >
+                                            <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
                                                 <button className={styles.country_list_item_button} >B</button>
-                                                <div className={styles.country_list_item_edit} ><p>
-                                                   {index + 1}. {country}
-                                                </p></div>
+                                                <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
+                                                    {index + 1}.</p>
+                                                    <input className={styles.emoji_input} type='text' maxLength={1} size={1}></input>
+                                                    <input className={styles.country_input} type='text' value={country} ></input>
+                                                    <span className={styles.country_drag_handle} >=</span>
                                                 </div>
+                                            </div>
 
-                                            </li>
-                                        )
-                                        }
-                                    </Draggable>)}
-                                </ol>
+                                        </li>
+                                    )
+                                    }
+                                </Draggable>)}
+                            </ol>
 
-                                {provided.placeholder}
-                            </div>)
-                        }
-                    </Droppable>
-                </DragDropContext>
+                            {provided.placeholder}
+                        </div>)
+                    }
+                </Droppable>
+            </DragDropContext>
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
         </main></>)
