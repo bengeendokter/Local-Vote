@@ -125,16 +125,15 @@ function Home()
                                     (
                                         <li
                                             {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
                                             ref={provided.innerRef}
                                             className={styles.country_list_item} >
                                             <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
-                                                <button className={styles.country_list_item_button} onSubmit={() => console.log("press")} ><Delete /></button>
+                                                <button className={styles.country_list_item_button} onClick={() => console.log("press")} ><Delete /></button>
                                                 <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
                                                     {index + 1}.</p>
                                                     <EmojiInput />
                                                     <input className={styles.country_input} type='text' value={country} ></input>
-                                                    <span className={styles.country_drag_handle} ><DragHandle /></span>
+                                                    <div {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandle /></div>
                                                 </div>
                                             </div>
 

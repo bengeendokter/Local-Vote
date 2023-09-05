@@ -55,6 +55,11 @@
     border-radius: var(--br-s);
 }
 
+.country_list_item_button:hover
+{
+    background-color: var(--clr-active);
+}
+
 .country_list_item:first-of-type .country_list_item_button
 {
     border-radius: var(--br-m) var(--br-s) var(--br-s) var(--br-s);
@@ -112,6 +117,9 @@
 
 .country_drag_handle
 {
+    display: flex;
     width: 2.8em;
-    text-align: center;
+    height: 100%;
+    padding-inline: 0.4em;
+    align-items: center;
 }

@@ -36,7 +36,8 @@ p
     margin: 0px;
 }
 
-ol, button
+ol,
+button
 {
     padding: 0px;
 }
@@ -56,4 +57,9 @@ input
 svg
 {
     fill: var(--clr-text);
+}
+
+button
+{
+    cursor: pointer;
 }
