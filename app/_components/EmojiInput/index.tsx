@@ -27,7 +27,7 @@ function EmojiInput()
         setEmojiText(emoji);
     }, [containsEmojiRegex, emojiText]);
 
-    return <input className={styles.emoji_input} value={emojiText} onChange={handleEmojiInput} type='text'></input>;
+    return <input className={styles.emoji_input} placeholder='🇪🇺' value={emojiText} onChange={handleEmojiInput} type='text'></input>;
 }
 
 export default EmojiInput;

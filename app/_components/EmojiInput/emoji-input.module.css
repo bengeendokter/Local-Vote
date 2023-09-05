@@ -6,3 +6,9 @@
     aspect-ratio: 1;
     font-size: 1.5rem;
 }
+
+.emoji_input::placeholder
+{
+    opacity: 0.2;
+    filter: grayscale(100%);
+}
