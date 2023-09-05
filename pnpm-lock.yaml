@@ -17,6 +17,9 @@ dependencies:
   '@types/react-dom':
     specifier: 18.2.4
     version: 18.2.4
+  emoji-regex:
+    specifier: ^10.2.1
+    version: 10.2.1
   eslint:
     specifier: 8.40.0
     version: 8.40.0
@@ -681,6 +684,10 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       esutils: 2.0.3
+    dev: false
+
+  /emoji-regex@10.2.1:
+    resolution: {integrity: sha512-97g6QgOk8zlDRdgq1WxwgTMgEWGVAQvB5Fdpgc1MkNy56la5SKP9GsMXKDOdqwn90/41a8yPwIGk1Y6WVbeMQA==}
     dev: false
 
   /emoji-regex@9.2.2:

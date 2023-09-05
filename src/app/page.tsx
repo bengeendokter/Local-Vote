@@ -4,6 +4,7 @@ import * as React from 'react';
 import styles from './home.module.css';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import useQueryParams from './hook/useQueryParams';
+import emojiRegex from 'emoji-regex';
 
 const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", '🇸🇪 Sweden', '🇫🇮 Finland'];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
@@ -18,6 +19,8 @@ function Home()
 {
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
     const [countries, setCountries] = React.useState<string[]>([]);
+    const [emojiText, setEmojiText] = React.useState("");
+    const containsEmojiRegex = emojiRegex();
 
     const calculateTotalRanking = React.useCallback(() =>
     {
@@ -107,6 +110,25 @@ function Home()
         calculateTotalRanking();
     }, [calculateTotalRanking]);
 
+    const handleEmojiInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>
+    {
+        const newEmoji = event.target.value;
+        if(newEmoji.length === 0 || emojiText.includes(newEmoji))
+        {
+            setEmojiText("");
+            return;
+        }
+
+        const matchArray = newEmoji.match(containsEmojiRegex);
+        if(matchArray === null)
+        {
+            return;
+        }
+
+        const emoji = matchArray.at(-1) ?? "";
+        setEmojiText(emoji);
+    }, [containsEmojiRegex, emojiText]);
+
     return (<>
         <header>
             <h1>Semi Final 1</h1>
@@ -129,7 +151,7 @@ function Home()
                                                 <button className={styles.country_list_item_button} >B</button>
                                                 <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
                                                     {index + 1}.</p>
-                                                    <input className={styles.emoji_input} type='text'></input>
+                                                    <input className={styles.emoji_input} value={emojiText} onChange={handleEmojiInput} type='text'></input>
                                                     <input className={styles.country_input} type='text' value={country} ></input>
                                                     <span className={styles.country_drag_handle} >=</span>
                                                 </div>
