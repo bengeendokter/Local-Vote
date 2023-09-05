@@ -77,15 +77,6 @@
     text-align: end;
 }
 
-.emoji_input
-{
-    flex: 0 0 auto;
-    text-align: center;
-    height: 100%;
-    aspect-ratio: 1;
-    font-size: 1.5rem;
-}
-
 .country_input
 {
     width: inherit;
