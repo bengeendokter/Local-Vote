@@ -4,12 +4,31 @@
     --clr-background: hsl(67, 62%, 95%);
     --clr-interact: hsl(54, 83%, 67%);
     --clr-active: hsl(240, 100%, 99%);
+
+    --br-m: 11px;
+    --br-s: 3px;
 }
+
+@font-face
+{
+    font-family: 'Twemoji';
+    src: url('./_assets/fonts/TwemojiCountryFlags.woff2') format('woff2');
+}
+
+@font-face
+{
+    font-family: 'Roboto Flex';
+    src: url('./_assets/fonts/RobotoFlex-VariableFont_GRAD,XTRA,YOPQ,YTAS,YTDE,YTFI,YTLC,YTUC,opsz,slnt,wdth,wght.woff2') format('woff2-variations');
+    font-weight: 100 1000;
+}
+
+
 
 html
 {
     background-color: var(--clr-background);
     color: var(--clr-text);
+    font-family: 'Roboto Flex';
 }
 
 p
@@ -29,11 +48,7 @@ div
 
 input
 {
-    font-family: inherit;
-}
-
-@font-face
-{
-    font-family: 'Twemoji';
-    src: url('./_assets/fonts/TwemojiCountryFlags.woff2') format('woff2');
+    font-family: "Twemoji", 'Roboto Flex';
+    background-color: var(--clr-background);
+    border-radius: var(--br-s);
 }

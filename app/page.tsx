@@ -109,8 +109,8 @@ function Home()
     }, [calculateTotalRanking]);
 
     return (<>
-        <header>
-            <h1>Semi Final 1</h1>
+        <header className={styles.header} >
+            <input className={styles.title_input} type='text' value="Semi Final 1" ></input>
         </header>
         <main className={styles.main}>
             <DragDropContext onDragEnd={onDragEnd}>
