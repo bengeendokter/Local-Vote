@@ -9,7 +9,7 @@ import DeleteIcon from './_assets/icons/Delete.svg';
 import DragHandleIcon from './_assets/icons/DragHandle.svg';
 import emojiRegex from 'emoji-regex';
 import { CountryInput } from './_components/CountryInput';
-import {uuid} from 'uuidv4';
+import {v4} from 'uuid';
 
 const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", '🇸🇪 Sweden', '🇫🇮 Finland'];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
@@ -33,7 +33,7 @@ function Home()
 
     const countriesToCountryObjectList = React.useCallback((countries: string[]): countryObjectId[] =>
     {
-        const countryObjectList: countryObjectId[] = countries.map((country) => {return {country, id: uuid()}});
+        const countryObjectList: countryObjectId[] = countries.map((country) => {return {country, id: v4()}});
         return countryObjectList;
     }, []);
 
