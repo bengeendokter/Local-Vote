@@ -141,6 +141,7 @@ function Home()
                     {
                         (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
                             <ol className={styles.country_list}>
+                                {/* TODO get unique id for each country, change country to string id pair? */}
                                 {countries.map(country => splitCountryInEmojiAndName(country)).map(({ emoji, name: countryName }, index) => <Draggable draggableId={countryName} index={index} key={index}>
                                     {(provided, snapshot) =>
                                     (
