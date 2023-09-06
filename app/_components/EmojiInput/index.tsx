@@ -4,6 +4,7 @@ import styles from './emoji-input.module.css';
 import emojiRegex from 'emoji-regex';
 import { InputProps } from '../../page';
 
+// TODO trigger emoji keyboard if possible?
 function EmojiInput({ emoji, countryName, setCountryObjectIdList, index, updateInputValue }: InputProps)
 {
     const [emojiText, setEmojiText] = React.useState(emoji);

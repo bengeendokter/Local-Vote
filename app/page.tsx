@@ -152,8 +152,33 @@ function Home()
         calculateTotalRanking();
     }, [calculateTotalRanking]);
 
+    const handleDelete = React.useCallback((index: number) =>
+    {
+        setCountryObjectIdList((countries) =>
+        {
+            const newCountries = Array.from(countries);
+            newCountries.splice(index, 1);
+
+            updateInputValue(newCountries);
+            return newCountries;
+        });
+    }, [updateInputValue]);
+
+    const handelAddCountry = React.useCallback(() =>
+    {
+        setCountryObjectIdList((countries) =>
+        {
+            const newCountries = Array.from(countries);
+            newCountries.push({country: "", id: v4()});
+
+            updateInputValue(newCountries);
+            return newCountries;
+        });
+    }, [updateInputValue]);
+
     return (<>
         <header className={styles.header} >
+            {/* TODO save title in query params ans local storage */}
             <input className={styles.title_input} type='text' value="Semi Final 1" ></input>
         </header>
         <main className={styles.main}>
@@ -170,7 +195,7 @@ function Home()
                                             ref={provided.innerRef}
                                             className={styles.country_list_item} >
                                             <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
-                                                <button className={styles.country_list_item_button} onClick={() => console.log("press")} >
+                                                <button className={styles.country_list_item_button} onClick={() => handleDelete(index)} >
                                                     <DeleteIcon />
                                                 </button>
                                                 <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
@@ -192,6 +217,7 @@ function Home()
                     }
                 </Droppable>
             </DragDropContext>
+            <button onClick={handelAddCountry}>Add country</button>
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
         </main></>)

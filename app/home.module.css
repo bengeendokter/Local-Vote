@@ -60,14 +60,14 @@
     background-color: var(--clr-active);
 }
 
-.country_list_item:first-of-type .country_list_item_button
-{
-    border-radius: var(--br-m) var(--br-s) var(--br-s) var(--br-s);
-}
-
 .country_list_item:last-of-type .country_list_item_button
 {
     border-radius: var(--br-s) var(--br-s) var(--br-s) var(--br-m);
+}
+
+.country_list_item:first-of-type .country_list_item_button
+{
+    border-radius: var(--br-m) var(--br-s) var(--br-s) var(--br-s);
 }
 
 .country_list_item_edit
@@ -83,14 +83,14 @@
     border-radius: var(--br-s);
 }
 
-.country_list_item:first-of-type .country_list_item_edit
-{
-    border-radius: var(--br-s) var(--br-m) var(--br-s) var(--br-s);
-}
-
 .country_list_item:last-of-type .country_list_item_edit
 {
     border-radius: var(--br-s) var(--br-s) var(--br-m) var(--br-s);
+}
+
+.country_list_item:first-of-type .country_list_item_edit
+{
+    border-radius: var(--br-s) var(--br-m) var(--br-s) var(--br-s);
 }
 
 .active

@@ -8,8 +8,6 @@ export function CountryInput({ emoji, countryName, setCountryObjectIdList, index
     const handleCountryNameInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>
     {
         const newName = event.target.value;
-        console.log("newName", newName);
-        console.log("newCountry", [emoji, newName].join(" ").trim());
 
         setCountryObjectIdList((countries) =>
         {
