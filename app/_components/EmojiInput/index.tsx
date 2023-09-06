@@ -4,7 +4,7 @@ import styles from './emoji-input.module.css';
 import emojiRegex from 'emoji-regex';
 import { InputProps } from '../../page';
 
-function EmojiInput({ emoji, countryName, setCountries, index }: InputProps)
+function EmojiInput({ emoji, countryName, setCountryObjectIdList, index }: InputProps)
 {
     const [emojiText, setEmojiText] = React.useState(emoji);
     const containsEmojiRegex = emojiRegex();
