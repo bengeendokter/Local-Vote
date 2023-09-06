@@ -16,8 +16,6 @@ export function CountryInput({ emoji, countryName, setCountryObjectIdList, index
             const newCountries = Array.from(countries);
             newCountries.splice(index, 1, {country: [emoji, newName].join(" ").trim(), id: countries[index].id});
 
-            console.log("newCountries", newCountries);
-
             updateInputValue(newCountries);
             return newCountries;
         });
