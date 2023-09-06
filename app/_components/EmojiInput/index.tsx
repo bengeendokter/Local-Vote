@@ -2,10 +2,11 @@
 import * as React from 'react';
 import styles from './emoji-input.module.css';
 import emojiRegex from 'emoji-regex';
+import { InputProps } from '../../page';
 
-function EmojiInput()
+function EmojiInput({ emoji, countryName, setCountries, index }: InputProps)
 {
-    const [emojiText, setEmojiText] = React.useState("");
+    const [emojiText, setEmojiText] = React.useState(emoji);
     const containsEmojiRegex = emojiRegex();
 
     const handleEmojiInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>

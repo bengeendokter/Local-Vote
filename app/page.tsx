@@ -5,8 +5,9 @@ import styles from './home.module.css';
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
 import useQueryParams from './_hooks/useQueryParams';
 import EmojiInput from './_components/EmojiInput';
-import Delete from './_assets/icons/Delete.svg';
-import DragHandle from './_assets/icons/DragHandle.svg';
+import DeleteIcon from './_assets/icons/Delete.svg';
+import DragHandleIcon from './_assets/icons/DragHandle.svg';
+import emojiRegex from 'emoji-regex';
 
 const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", '🇸🇪 Sweden', '🇫🇮 Finland'];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
@@ -21,6 +22,7 @@ function Home()
 {
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
     const [countries, setCountries] = React.useState<string[]>([]);
+    const containsEmojiRegex = emojiRegex();
 
     const calculateTotalRanking = React.useCallback(() =>
     {
@@ -105,6 +107,24 @@ function Home()
         });
     }, [updateInputValue]);
 
+    type countryObject = {
+        emoji: string;
+        name: string;
+    }
+
+    const splitCountryInEmojiAndName = React.useCallback((country: string): countryObject =>
+    {
+        const countrySplitArray = country.split(" ");
+        const possibleEmoji = countrySplitArray[0];
+        const matchArray = possibleEmoji.match(containsEmojiRegex);
+
+        const containsEmoji = matchArray !== null;
+        const emoji = containsEmoji ? matchArray[0] : "";
+        const name = containsEmoji ? countrySplitArray.slice(1).join(" ") : country;
+
+        return { emoji, name };
+    }, [containsEmojiRegex]);
+
     const handleCalculateTotal = React.useCallback(() =>
     {
         calculateTotalRanking();
@@ -120,7 +140,7 @@ function Home()
                     {
                         (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
                             <ol className={styles.country_list}>
-                                {countries.map((country, index) => <Draggable draggableId={country} index={index} key={country}>
+                                {countries.map(country => splitCountryInEmojiAndName(country)).map(({ emoji, name: countryName }, index) => <Draggable draggableId={countryName} index={index} key={index}>
                                     {(provided, snapshot) =>
                                     (
                                         <li
@@ -128,12 +148,14 @@ function Home()
                                             ref={provided.innerRef}
                                             className={styles.country_list_item} >
                                             <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
-                                                <button className={styles.country_list_item_button} onClick={() => console.log("press")} ><Delete /></button>
+                                                <button className={styles.country_list_item_button} onClick={() => console.log("press")} >
+                                                    <DeleteIcon />
+                                                </button>
                                                 <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
                                                     {index + 1}.</p>
-                                                    <EmojiInput />
-                                                    <input className={styles.country_input} type='text' value={country} ></input>
-                                                    <div {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandle /></div>
+                                                    <EmojiInput emoji={emoji} countryName={countryName} setCountries={setCountries} index={index} updateInputValue={updateInputValue} />
+                                                    <CountryInput emoji={emoji} countryName={countryName} setCountries={setCountries} index={index} updateInputValue={updateInputValue}/>
+                                                    <div {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandleIcon /></div>
                                                 </div>
                                             </div>
 
@@ -154,4 +176,35 @@ function Home()
 }
 
 export default Home;
+
+export type InputProps = {
+    emoji: string;
+    countryName: string;
+    setCountries: React.Dispatch<React.SetStateAction<string[]>>;
+    index: number;
+    updateInputValue: (newInputValue: string[]) => void;
+}
+
+function CountryInput({ emoji, countryName, setCountries, index, updateInputValue }: InputProps)
+{
+    const handleCountryNameInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>
+    {
+        const newName = event.target.value;
+        console.log("newName", newName);
+        console.log("newCountry", [emoji, newName].join(" ").trim());
+
+        setCountries((countries) =>
+        {
+            const newCountries = Array.from(countries);
+            newCountries.splice(index, 1, [emoji, newName].join(" ").trim());
+
+            console.log("newCountries", newCountries)
+
+            updateInputValue(newCountries);
+            return newCountries;
+        });
+    }, [emoji, index, setCountries, updateInputValue]);
+
+    return <input className={styles.country_input} type='text' onChange={handleCountryNameInput} value={countryName}></input>;
+}
 
