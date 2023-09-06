@@ -106,15 +106,6 @@
     line-height: 1.2;
 }
 
-.country_input
-{
-    width: inherit;
-    height: 100%;
-    font-size: 0.9rem;
-    font-weight: bold;
-    line-height: 1.2;
-}
-
 .country_drag_handle
 {
     display: flex;

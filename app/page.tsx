@@ -8,6 +8,7 @@ import EmojiInput from './_components/EmojiInput';
 import DeleteIcon from './_assets/icons/Delete.svg';
 import DragHandleIcon from './_assets/icons/DragHandle.svg';
 import emojiRegex from 'emoji-regex';
+import { CountryInput } from './_components/CountryInput';
 
 const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", '🇸🇪 Sweden', '🇫🇮 Finland'];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
@@ -154,7 +155,7 @@ function Home()
                                                 <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
                                                     {index + 1}.</p>
                                                     <EmojiInput emoji={emoji} countryName={countryName} setCountries={setCountries} index={index} updateInputValue={updateInputValue} />
-                                                    <CountryInput emoji={emoji} countryName={countryName} setCountries={setCountries} index={index} updateInputValue={updateInputValue}/>
+                                                    <CountryInput emoji={emoji} countryName={countryName} setCountries={setCountries} index={index} updateInputValue={updateInputValue} />
                                                     <div {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandleIcon /></div>
                                                 </div>
                                             </div>
@@ -184,27 +185,3 @@ export type InputProps = {
     index: number;
     updateInputValue: (newInputValue: string[]) => void;
 }
-
-function CountryInput({ emoji, countryName, setCountries, index, updateInputValue }: InputProps)
-{
-    const handleCountryNameInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>
-    {
-        const newName = event.target.value;
-        console.log("newName", newName);
-        console.log("newCountry", [emoji, newName].join(" ").trim());
-
-        setCountries((countries) =>
-        {
-            const newCountries = Array.from(countries);
-            newCountries.splice(index, 1, [emoji, newName].join(" ").trim());
-
-            console.log("newCountries", newCountries)
-
-            updateInputValue(newCountries);
-            return newCountries;
-        });
-    }, [emoji, index, setCountries, updateInputValue]);
-
-    return <input className={styles.country_input} type='text' onChange={handleCountryNameInput} value={countryName}></input>;
-}
-
