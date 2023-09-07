@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+    metadataBase: new URL("https://local-vote.netlify.app"),
     title: "Local Vote",
     description: "Make your own rankings",
     keywords: ["ranking"],
