@@ -7,9 +7,10 @@ import useQueryParams from './_hooks/useQueryParams';
 import EmojiInput from './_components/EmojiInput';
 import DeleteIcon from './_assets/icons/Delete.svg';
 import DragHandleIcon from './_assets/icons/DragHandle.svg';
+import AddIcon from './_assets/icons/Add.svg';
 import emojiRegex from 'emoji-regex';
 import { CountryInput } from './_components/CountryInput';
-import {v4} from 'uuid';
+import { v4 } from 'uuid';
 
 const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", '🇸🇪 Sweden', '🇫🇮 Finland'];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
@@ -25,29 +26,31 @@ type countryObjectId = {
     id: string;
 }
 
+// TODO in the future store ranking as an object with a title and ranking field in local storage, use a uuid as key and a list with al uuid's to look them up
 function Home()
 {
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
     const [countryObjectList, setCountryObjectIdList] = React.useState<countryObjectId[]>([])
     const containsEmojiRegex = emojiRegex();
+    const [title, setTitle] = React.useState('');
 
     const countriesToCountryObjectList = React.useCallback((countries: string[]): countryObjectId[] =>
     {
-        const countryObjectList: countryObjectId[] = countries.map((country) => {return {country, id: v4()}});
+        const countryObjectList: countryObjectId[] = countries.map((country) => { return { country, id: v4() } });
         return countryObjectList;
     }, []);
 
     const countryObjectListToCountries = React.useCallback((countryObjectList: countryObjectId[]): string[] =>
     {
-        const countryList: string[] = countryObjectList.map(({country}) => country);
+        const countryList: string[] = countryObjectList.map(({ country }) => country);
         return countryList;
     }, []);
 
     const calculateTotalRanking = React.useCallback(() =>
     {
-        const pointsMap = new Map<string, number>((countryObjectList).map(({country}) => [country, 0]));
+        const pointsMap = new Map<string, number>((countryObjectList).map(({ country }) => [country, 0]));
 
-        countryObjectList.forEach(({country}, index) =>
+        countryObjectList.forEach(({ country }, index) =>
         {
             if(index >= SCORE_VALUES.length)
             {
@@ -96,6 +99,7 @@ function Home()
         const nonNullInputValue = initialInputValue === null ? DEFAULT_COUNTRIES : initialInputValue;
         const countryObjectList = countriesToCountryObjectList(nonNullInputValue);
         setCountryObjectIdList(countryObjectList);
+        setTitle(localStorage.getItem("title") ?? "");
     }, [countriesToCountryObjectList, queryParams, setQueryParams]);
 
     const handleReset = React.useCallback(() =>
@@ -169,17 +173,23 @@ function Home()
         setCountryObjectIdList((countries) =>
         {
             const newCountries = Array.from(countries);
-            newCountries.push({country: "", id: v4()});
+            newCountries.push({ country: "", id: v4() });
 
             updateInputValue(newCountries);
             return newCountries;
         });
     }, [updateInputValue]);
 
+    const handleTitleInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>
+    {
+        const newTitle = event.target.value;
+        setTitle(newTitle);
+        localStorage.setItem("title", newTitle);
+    }, []);
+
     return (<>
         <header className={styles.header} >
-            {/* TODO save title in query params ans local storage */}
-            <input className={styles.title_input} type='text' value="Semi Final 1" ></input>
+            <input className={styles.title_input} onChange={handleTitleInput} type='text' value={title} ></input>
         </header>
         <main className={styles.main}>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -187,7 +197,7 @@ function Home()
                     {
                         (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
                             <ol className={styles.country_list}>
-                                {countryObjectList.map(({country, id}) => {return {...splitCountryInEmojiAndName(country), id}}).map(({ emoji, name: countryName, id }, index) => <Draggable draggableId={countryName} index={index} key={id}>
+                                {countryObjectList.map(({ country, id }) => { return { ...splitCountryInEmojiAndName(country), id } }).map(({ emoji, name: countryName, id }, index) => <Draggable draggableId={id} index={index} key={id}>
                                     {(provided, snapshot) =>
                                     (
                                         <li
@@ -217,7 +227,7 @@ function Home()
                     }
                 </Droppable>
             </DragDropContext>
-            <button onClick={handelAddCountry}>Add country</button>
+            <button className={styles.add_button} onClick={handelAddCountry}><AddIcon /></button>
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
         </main></>)
