@@ -194,7 +194,7 @@ function Home()
     const handleHueInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>
     {
         const newHue = event.target.value;
-        const parsedHue = parseInt(newHue);
+        const parsedHue = newHue.length === 0 ? 0 : parseInt(newHue);
         if(isNaN(parsedHue))
         {
             return;
@@ -249,7 +249,7 @@ function Home()
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
             <input type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
-            <input type="number" min={0} max={360} value={hue} onChange={handleHueInput} />
+            <input type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
         </main></>)
 }
 
