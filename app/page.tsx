@@ -205,6 +205,29 @@ function Home()
         document.documentElement.style.setProperty("--hue", parsedHue.toString());
     }, []);
 
+    const handleSubmit = React.useCallback((event: React.FormEvent<HTMLFormElement>) =>
+    {
+        event.preventDefault();
+
+        const myForm = event.target as HTMLFormElement;
+        const formData = new FormData(myForm);
+
+        const record: Record<string, string> = {};
+
+        formData.forEach((value, key) =>
+        {
+            record[key] = value.toString();
+        });
+
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(record).toString(),
+        })
+            .then(() => alert("succes"))
+            .catch((error) => alert(error));
+    }, []);
+
     return (<>
         <header className={styles.header} >
             <input className={styles.title_input} onChange={handleTitleInput} type='text' value={title} ></input>
@@ -250,7 +273,7 @@ function Home()
             <button onClick={handleCalculateTotal}>Calculate Total</button>
             <input type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
             <input type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
-            <form className={styles.form} name="contact" method="POST" data-netlify="true" >
+            <form className={styles.form} name="contact" method="POST" data-netlify="true" onSubmit={handleSubmit} >
                 <input type="hidden" name="form-name" value="contact" />
                 <label className={styles.form_label} htmlFor="message" >Leave a suggestion or message:</label>
                 <textarea className={styles.form_textarea} id="message" name="message"></textarea>
