@@ -1,12 +1,19 @@
+@import url("normalize.css");
+
 :root
 {
+    color-scheme: light;
+
+    --hue: 54;
     --clr-text: hsl(236, 21%, 14%);
-    --clr-background: hsl(67, 62%, 95%);
-    --clr-interact: hsl(54, 83%, 67%);
+    --clr-background: hsl(var(--hue), 62%, 95%);
+    --clr-interact: hsl(var(--hue), 83%, 67%);
     --clr-active: hsl(240, 100%, 99%);
+    --clr-selection: hsl(calc(180 + var(--hue)), 83%, 67%);
 
     --br-m: 11px;
     --br-s: 3px;
+    accent-color: var(--clr-interact);
 }
 
 @font-face
@@ -22,7 +29,34 @@
     font-weight: 100 1000;
 }
 
+::selection
+{
+  background: var(--clr-selection);
+}
 
+/* scrollbar */
+::-webkit-scrollbar
+{
+  width: 13px;
+}
+
+::-webkit-scrollbar-track
+{
+  background: var(--clr-under-text);
+}
+
+::-webkit-scrollbar-track:hover
+{
+  background: var(--clr-text);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: var(--clr-background);
+  border: 1.5px solid transparent;
+  background-clip: content-box;
+  border-radius: 100vw;
+}
 
 html
 {

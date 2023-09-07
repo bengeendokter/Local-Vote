@@ -33,6 +33,7 @@ function Home()
     const [countryObjectList, setCountryObjectIdList] = React.useState<countryObjectId[]>([])
     const containsEmojiRegex = emojiRegex();
     const [title, setTitle] = React.useState('');
+    const [hue, setHue] = React.useState<number>();
 
     const countriesToCountryObjectList = React.useCallback((countries: string[]): countryObjectId[] =>
     {
@@ -100,6 +101,9 @@ function Home()
         const countryObjectList = countriesToCountryObjectList(nonNullInputValue);
         setCountryObjectIdList(countryObjectList);
         setTitle(localStorage.getItem("title") ?? "");
+        const storedHue = parseInt(localStorage.getItem("hue") ?? "54");
+        setHue(storedHue);
+        document.documentElement.style.setProperty('--hue', storedHue.toString());
     }, [countriesToCountryObjectList, queryParams, setQueryParams]);
 
     const handleReset = React.useCallback(() =>
@@ -187,6 +191,20 @@ function Home()
         localStorage.setItem("title", newTitle);
     }, []);
 
+    const handleHueInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>
+    {
+        const newHue = event.target.value;
+        const parsedHue = parseInt(newHue);
+        if(isNaN(parsedHue))
+        {
+            return;
+        }
+
+        setHue(parsedHue);
+        localStorage.setItem("hue", parsedHue.toString());
+        document.documentElement.style.setProperty('--hue', parsedHue.toString());
+    }, []);
+
     return (<>
         <header className={styles.header} >
             <input className={styles.title_input} onChange={handleTitleInput} type='text' value={title} ></input>
@@ -230,6 +248,8 @@ function Home()
             <button className={styles.add_button} onClick={handelAddCountry}><AddIcon /></button>
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
+            <input type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
+            <input type="number" min={0} max={360} value={hue} onChange={handleHueInput} />
         </main></>)
 }
 

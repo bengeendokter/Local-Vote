@@ -84,7 +84,7 @@
     padding: 0px 10px 0px 5px;
     flex-wrap: nowrap;
     gap: 0.4em;
-    padding-block: 0.4em;
+    padding-block: 0.2em;
     border-radius: var(--br-s);
 }
 
