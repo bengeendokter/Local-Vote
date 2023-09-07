@@ -1,7 +1,7 @@
 "use client";
-import * as React from 'react';
-import styles from './country-input.module.css';
-import { InputProps } from '../../page';
+import * as React from "react";
+import styles from "./country-input.module.css";
+import { InputProps } from "../../page";
 
 export function CountryInput({ emoji, countryName, setCountryObjectIdList, index, updateInputValue }: InputProps)
 {
@@ -12,7 +12,7 @@ export function CountryInput({ emoji, countryName, setCountryObjectIdList, index
         setCountryObjectIdList((countries) =>
         {
             const newCountries = Array.from(countries);
-            newCountries.splice(index, 1, {country: [emoji, newName].join(" ").trim(), id: countries[index].id});
+            newCountries.splice(index, 1, { country: [emoji, newName].join(" ").trim(), id: countries[index].id });
 
             updateInputValue(newCountries);
             return newCountries;

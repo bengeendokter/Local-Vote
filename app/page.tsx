@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import * as React from 'react';
-import styles from './home.module.css';
-import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from 'react-beautiful-dnd';
-import useQueryParams from './_hooks/useQueryParams';
-import EmojiInput from './_components/EmojiInput';
-import DeleteIcon from './_assets/icons/Delete.svg';
-import DragHandleIcon from './_assets/icons/DragHandle.svg';
-import AddIcon from './_assets/icons/Add.svg';
-import emojiRegex from 'emoji-regex';
-import { CountryInput } from './_components/CountryInput';
-import { v4 } from 'uuid';
+import * as React from "react";
+import styles from "./home.module.css";
+import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from "react-beautiful-dnd";
+import useQueryParams from "./_hooks/useQueryParams";
+import EmojiInput from "./_components/EmojiInput";
+import DeleteIcon from "./_assets/icons/Delete.svg";
+import DragHandleIcon from "./_assets/icons/DragHandle.svg";
+import AddIcon from "./_assets/icons/Add.svg";
+import emojiRegex from "emoji-regex";
+import { CountryInput } from "./_components/CountryInput";
+import { v4 } from "uuid";
 
-const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", '🇸🇪 Sweden', '🇫🇮 Finland'];
+const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", "🇸🇪 Sweden", "🇫🇮 Finland"];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
 
@@ -30,14 +30,14 @@ type countryObjectId = {
 function Home()
 {
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
-    const [countryObjectList, setCountryObjectIdList] = React.useState<countryObjectId[]>([])
+    const [countryObjectList, setCountryObjectIdList] = React.useState<countryObjectId[]>([]);
     const containsEmojiRegex = emojiRegex();
-    const [title, setTitle] = React.useState('');
+    const [title, setTitle] = React.useState("");
     const [hue, setHue] = React.useState<number>();
 
     const countriesToCountryObjectList = React.useCallback((countries: string[]): countryObjectId[] =>
     {
-        const countryObjectList: countryObjectId[] = countries.map((country) => { return { country, id: v4() } });
+        const countryObjectList: countryObjectId[] = countries.map((country) => { return { country, id: v4() }; });
         return countryObjectList;
     }, []);
 
@@ -61,7 +61,7 @@ function Home()
             const oldPoints = pointsMap.get(country) ?? 0;
             const newPoints = oldPoints + (SCORE_MAP.get(index) ?? 0);
             pointsMap.set(country, newPoints);
-        })
+        });
 
         const rankingArray = Array.from(pointsMap.entries()).sort(([, points1], [, points2]) => points2 - points1);
         alert(rankingArray);
@@ -103,7 +103,7 @@ function Home()
         setTitle(localStorage.getItem("title") ?? "");
         const storedHue = parseInt(localStorage.getItem("hue") ?? "54");
         setHue(storedHue);
-        document.documentElement.style.setProperty('--hue', storedHue.toString());
+        document.documentElement.style.setProperty("--hue", storedHue.toString());
     }, [countriesToCountryObjectList, queryParams, setQueryParams]);
 
     const handleReset = React.useCallback(() =>
@@ -202,7 +202,7 @@ function Home()
 
         setHue(parsedHue);
         localStorage.setItem("hue", parsedHue.toString());
-        document.documentElement.style.setProperty('--hue', parsedHue.toString());
+        document.documentElement.style.setProperty("--hue", parsedHue.toString());
     }, []);
 
     return (<>
@@ -215,7 +215,7 @@ function Home()
                     {
                         (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
                             <ol className={styles.country_list}>
-                                {countryObjectList.map(({ country, id }) => { return { ...splitCountryInEmojiAndName(country), id } }).map(({ emoji, name: countryName, id }, index) => <Draggable draggableId={id} index={index} key={id}>
+                                {countryObjectList.map(({ country, id }) => { return { ...splitCountryInEmojiAndName(country), id }; }).map(({ emoji, name: countryName, id }, index) => <Draggable draggableId={id} index={index} key={id}>
                                     {(provided, snapshot) =>
                                     (
                                         <li
@@ -250,7 +250,7 @@ function Home()
             <button onClick={handleCalculateTotal}>Calculate Total</button>
             <input type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
             <input type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
-        </main></>)
+        </main></>);
 }
 
 export default Home;

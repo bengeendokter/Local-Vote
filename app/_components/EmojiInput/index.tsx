@@ -1,8 +1,8 @@
 "use client";
-import * as React from 'react';
-import styles from './emoji-input.module.css';
-import emojiRegex from 'emoji-regex';
-import { InputProps } from '../../page';
+import * as React from "react";
+import styles from "./emoji-input.module.css";
+import emojiRegex from "emoji-regex";
+import { InputProps } from "../../page";
 
 function EmojiInput({ emoji, countryName, setCountryObjectIdList, index, updateInputValue }: InputProps)
 {
