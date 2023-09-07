@@ -13,6 +13,7 @@
     font-weight: bold;
     line-height: 1.2;
     text-align: center;
+    margin-block-start: 0.6em;
 }
 
 .main
@@ -136,4 +137,23 @@
 .add_button:hover
 {
     background-color: var(--clr-active);
+}
+
+.form
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8em;
+    margin-block-end: 1.2em;
+}
+
+.form_label
+{
+    font-weight: 600;
+}
+
+.form_textarea
+{
+    background-color: var(--clr-background);
 }
