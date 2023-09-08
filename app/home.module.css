@@ -25,6 +25,11 @@
     gap: 0.8em;
 }
 
+.main > div
+{
+    max-width: 28em;
+}
+
 .country_list
 {
     display: flex;
@@ -156,4 +161,9 @@
 .form_textarea
 {
     background-color: var(--clr-background);
+}
+
+.loading_label
+{
+    font-weight: 600;
 }

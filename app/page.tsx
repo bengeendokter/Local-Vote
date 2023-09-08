@@ -11,8 +11,10 @@ import AddIcon from "./_assets/icons/Add.svg";
 import emojiRegex from "emoji-regex";
 import { CountryInput } from "./_components/CountryInput";
 import { v4 } from "uuid";
+import LoadingIcon from "./_components/LoadingIcon";
+import { toPng } from "html-to-image";
 
-const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", "🇸🇪 Sweden", "🇫🇮 Finland"];
+const DEFAULT_COUNTRIES = ["🇦🇱 Albania", "🇦🇩 Andorra", "🇦🇲 Armenia", "🇦🇺 Australia", "🇦🇹 Austria", "🇦🇿 Azerbaijan", "🇧🇪 Belgium", "🇧🇦 Bosnia and Herzegovina", "🇧🇬 Bulgaria", "🇭🇷 Croatia", "🇨🇾 Cyprus", "🇨🇿 Czechia", "🇩🇰 Denmark", "🇪🇪 Estonia", "🇫🇮 Finland", "🇫🇷 France", "🇬🇪 Georgia", "🇩🇪 Germany", "🇬🇷 Greece", "🇭🇺 Hungary", "🇮🇸 Iceland", "🇮🇪 Ireland", "🇮🇱 Israel", "🇮🇹 Italy", "🇱🇻 Latvia", "🇱🇹 Lithuania", "🇱🇺 Luxembourg", "🇲🇹 Malta", "🇲🇩 Moldova", "🇲🇨 Monaco", "🇲🇪 Montenegro", "🇲🇦 Morocco", "🇳🇱 Netherlands", "🇲🇰 North Macedonia", "🇳🇴 Norway", "🇵🇱 Poland", "🇵🇹 Portugal", "🇷🇴 Romania", "🇸🇲 San Marino", "🇷🇸 Serbia", "🇸🇰 Slovakia", "🇸🇮 Slovenia", "🇪🇸 Spain", "🇸🇪 Sweden", "🇨🇭 Switzerland", "🇹🇷 Turkey", "🇺🇦 Ukraine", "🇬🇧 United Kingdom"];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
 
@@ -27,12 +29,16 @@ type countryObjectId = {
 }
 
 // TODO in the future store ranking as an object with a title and ranking field in local storage, use a uuid as key and a list with al uuid's to look them up
+// TODO based on device type show emoji hint, windows: press windows + ; to open emoji keyboard, macos...
+// TODO highlight or show emoji hint based on failed onChange input in EmojiInputField in the handleInput function
 function Home()
 {
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
     const [countryObjectList, setCountryObjectIdList] = React.useState<countryObjectId[]>([]);
     const containsEmojiRegex = emojiRegex();
     const [title, setTitle] = React.useState("");
+    const [message, setMessage] = React.useState("");
+    const [isFormLoading, setFormLoading] = React.useState(false);
     const [hue, setHue] = React.useState<number>();
 
     const countriesToCountryObjectList = React.useCallback((countries: string[]): countryObjectId[] =>
@@ -207,6 +213,9 @@ function Home()
 
     const handleSubmit = React.useCallback((event: React.FormEvent<HTMLFormElement>) =>
     {
+        setFormLoading(true);
+        setMessage("");
+
         event.preventDefault();
 
         const myForm = event.target as HTMLFormElement;
@@ -224,20 +233,57 @@ function Home()
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams(record).toString(),
         })
-            .then(() => alert("succes"))
-            .catch((error) => alert(error));
+            .then((response) =>
+            {
+                if(response.status !== 200)
+                {
+                    throw new Error(":( Oops, I probably broke something. Please try again later.");
+                }
+                alert("succes");
+            })
+            .catch((error: Error) => alert(error.message))
+            .finally(() => setFormLoading(false));
     }, []);
+
+    const handleMessageInput = React.useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    {
+        const newMessage = event.target.value;
+        setMessage(newMessage);
+    }, []);
+
+    const imageRef = React.useRef<HTMLOListElement>(null);
+
+    const onButtonClick = React.useCallback(() =>
+    {
+        if(imageRef.current === null)
+        {
+            return;
+        }
+
+        toPng(imageRef.current, { cacheBust: true })
+            .then((dataUrl) =>
+            {
+                const link = document.createElement("a");
+                link.download = "my-image-name.png";
+                link.href = dataUrl;
+                link.click();
+            })
+            .catch((err) =>
+            {
+                console.log(err);
+            });
+    }, [imageRef]);
 
     return (<>
         <header className={styles.header} >
-            <input className={styles.title_input} onChange={handleTitleInput} type='text' value={title} ></input>
+            <input className={styles.title_input} onChange={handleTitleInput} type='text' placeholder="Title" value={title} ></input>
         </header>
         <main className={styles.main}>
             <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId='countries'>
+                <Droppable droppableId='countries' >
                     {
                         (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
-                            <ol className={styles.country_list}>
+                            <ol ref={imageRef} className={styles.country_list}>
                                 {countryObjectList.map(({ country, id }) => { return { ...splitCountryInEmojiAndName(country), id }; }).map(({ emoji, name: countryName, id }, index) => <Draggable draggableId={id} index={index} key={id}>
                                     {(provided, snapshot) =>
                                     (
@@ -246,14 +292,14 @@ function Home()
                                             ref={provided.innerRef}
                                             className={styles.country_list_item} >
                                             <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
-                                                <button className={styles.country_list_item_button} onClick={() => handleDelete(index)} >
+                                                <button aria-label="Remove ranking item" className={styles.country_list_item_button} onClick={() => handleDelete(index)} >
                                                     <DeleteIcon />
                                                 </button>
                                                 <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
                                                     {index + 1}.</p>
                                                     <EmojiInput emoji={emoji} countryName={countryName} setCountryObjectIdList={setCountryObjectIdList} index={index} updateInputValue={updateInputValue} />
                                                     <CountryInput emoji={emoji} countryName={countryName} setCountryObjectIdList={setCountryObjectIdList} index={index} updateInputValue={updateInputValue} />
-                                                    <div {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandleIcon /></div>
+                                                    <div aria-label="Drag handle" {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandleIcon /></div>
                                                 </div>
                                             </div>
 
@@ -268,16 +314,21 @@ function Home()
                     }
                 </Droppable>
             </DragDropContext>
-            <button className={styles.add_button} onClick={handelAddCountry}><AddIcon /></button>
+            <button className={styles.add_button} aria-label="Add ranking item" onClick={handelAddCountry}><AddIcon /></button>
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
-            <input type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
-            <input type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
+            <button onClick={onButtonClick}>Download</button>
+            <label className={styles.form_label} htmlFor="hue" >Change app color</label>
+            <input id="hue" type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
+            <input aria-label='App color value' type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
             <form className={styles.form} name="contact local vote" method="POST" data-netlify="true" onSubmit={handleSubmit} >
                 <input type="hidden" name="form-name" value="contact local vote" />
-                <label className={styles.form_label} htmlFor="message" >Leave a suggestion or message:</label>
-                <textarea className={styles.form_textarea} id="message" name="message"></textarea>
-                <button type="submit">Send</button>
+                {isFormLoading
+                    ? <><p className={styles.loading_label} >Sending message</p> <LoadingIcon /></>
+                    : <>
+                        <label className={styles.form_label} htmlFor="message" >Leave a suggestion or message:</label>
+                        <textarea rows={3} className={styles.form_textarea} id="message" name="message" placeholder="Type your message here" value={message} onChange={handleMessageInput} ></textarea></>}
+                <button type="submit" disabled={isFormLoading} >Send</button>
             </form>
         </main></>);
 }
