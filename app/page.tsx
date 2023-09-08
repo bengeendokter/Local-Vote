@@ -219,7 +219,7 @@ function Home()
             record[key] = value.toString();
         });
 
-        // TODO 404 response does not alert error, simulate this on production by removing the hidden html form or disabling form detection?
+        // TODO 404/500 response does not alert error, simulate this on production by removing the hidden html form or disabling form detection or on localhost by waiting for timeout?
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
