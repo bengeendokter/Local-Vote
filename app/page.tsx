@@ -12,8 +12,9 @@ import emojiRegex from "emoji-regex";
 import { CountryInput } from "./_components/CountryInput";
 import { v4 } from "uuid";
 import LoadingIcon from "./_components/LoadingIcon";
+import { toPng } from "html-to-image";
 
-const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", "🇸🇪 Sweden", "🇫🇮 Finland"];
+const DEFAULT_COUNTRIES = ["🇦🇱 Albania", "🇦🇩 Andorra", "🇦🇲 Armenia", "🇦🇺 Australia", "🇦🇹 Austria", "🇦🇿 Azerbaijan", "🇧🇪 Belgium", "🇧🇦 Bosnia and Herzegovina", "🇧🇬 Bulgaria", "🇭🇷 Croatia", "🇨🇾 Cyprus", "🇨🇿 Czechia", "🇩🇰 Denmark", "🇪🇪 Estonia", "🇫🇮 Finland", "🇫🇷 France", "🇬🇪 Georgia", "🇩🇪 Germany", "🇬🇷 Greece", "🇭🇺 Hungary", "🇮🇸 Iceland", "🇮🇪 Ireland", "🇮🇱 Israel", "🇮🇹 Italy", "🇱🇻 Latvia", "🇱🇹 Lithuania", "🇱🇺 Luxembourg", "🇲🇹 Malta", "🇲🇩 Moldova", "🇲🇨 Monaco", "🇲🇪 Montenegro", "🇲🇦 Morocco", "🇳🇱 Netherlands", "🇲🇰 North Macedonia", "🇳🇴 Norway", "🇵🇱 Poland", "🇵🇹 Portugal", "🇷🇴 Romania", "🇸🇲 San Marino", "🇷🇸 Serbia", "🇸🇰 Slovakia", "🇸🇮 Slovenia", "🇪🇸 Spain", "🇸🇪 Sweden", "🇨🇭 Switzerland", "🇹🇷 Turkey", "🇺🇦 Ukraine", "🇬🇧 United Kingdom"];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
 
@@ -236,7 +237,7 @@ function Home()
             {
                 if(response.status !== 200)
                 {
-                    throw new Error("Oops, I probably broke something :(. Please try again later.");
+                    throw new Error(":( Oops, I probably broke something. Please try again later.");
                 }
                 alert("succes");
             })
@@ -250,6 +251,29 @@ function Home()
         setMessage(newMessage);
     }, []);
 
+    const imageRef = React.useRef<HTMLOListElement>(null);
+
+    const onButtonClick = React.useCallback(() =>
+    {
+        if(imageRef.current === null)
+        {
+            return;
+        }
+
+        toPng(imageRef.current, { cacheBust: true })
+            .then((dataUrl) =>
+            {
+                const link = document.createElement("a");
+                link.download = "my-image-name.png";
+                link.href = dataUrl;
+                link.click();
+            })
+            .catch((err) =>
+            {
+                console.log(err);
+            });
+    }, [imageRef]);
+
     return (<>
         <header className={styles.header} >
             <input className={styles.title_input} onChange={handleTitleInput} type='text' placeholder="Title" value={title} ></input>
@@ -259,7 +283,7 @@ function Home()
                 <Droppable droppableId='countries' >
                     {
                         (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
-                            <ol className={styles.country_list}>
+                            <ol ref={imageRef} className={styles.country_list}>
                                 {countryObjectList.map(({ country, id }) => { return { ...splitCountryInEmojiAndName(country), id }; }).map(({ emoji, name: countryName, id }, index) => <Draggable draggableId={id} index={index} key={id}>
                                     {(provided, snapshot) =>
                                     (
@@ -293,6 +317,7 @@ function Home()
             <button className={styles.add_button} onClick={handelAddCountry}><AddIcon /></button>
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
+            <button onClick={onButtonClick}>Download</button>
             <input type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
             <input type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
             <form className={styles.form} name="contact local vote" method="POST" data-netlify="true" onSubmit={handleSubmit} >
@@ -301,7 +326,7 @@ function Home()
                     ? <><p className={styles.loading_label} >Sending message</p> <LoadingIcon /></>
                     : <>
                         <label className={styles.form_label} htmlFor="message" >Leave a suggestion or message:</label>
-                        <textarea rows={3} className={styles.form_textarea} id="message" name="message" value={message} onChange={handleMessageInput} ></textarea></>}
+                        <textarea rows={3} className={styles.form_textarea} id="message" name="message" placeholder="Type your message here" value={message} onChange={handleMessageInput} ></textarea></>}
                 <button type="submit" disabled={isFormLoading} >Send</button>
             </form>
         </main></>);
