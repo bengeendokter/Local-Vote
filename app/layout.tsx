@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     },
     themeColor: "#F1E365",
     twitter: { card: "summary_large_image", creator: "@bengeendokter" },
+    manifest: "/manifest.json",
 };
 
 export default function RootLayout({
