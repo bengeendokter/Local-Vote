@@ -219,6 +219,7 @@ function Home()
             record[key] = value.toString();
         });
 
+        // TODO 404 response does not alert error, simulate this on production by removing the hidden html form or disabling form detection?
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
