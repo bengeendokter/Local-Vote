@@ -273,8 +273,8 @@ function Home()
             <button onClick={handleCalculateTotal}>Calculate Total</button>
             <input type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
             <input type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
-            <form className={styles.form} name="contact" method="POST" data-netlify="true" onSubmit={handleSubmit} >
-                <input type="hidden" name="form-name" value="contact" />
+            <form className={styles.form} name="contact local vote" method="POST" data-netlify="true" onSubmit={handleSubmit} >
+                <input type="hidden" name="form-name" value="contact local vote" />
                 <label className={styles.form_label} htmlFor="message" >Leave a suggestion or message:</label>
                 <textarea className={styles.form_textarea} id="message" name="message"></textarea>
                 <button type="submit">Send</button>
