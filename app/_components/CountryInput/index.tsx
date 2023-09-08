@@ -19,5 +19,5 @@ export function CountryInput({ emoji, countryName, setCountryObjectIdList, index
         });
     }, [emoji, index, setCountryObjectIdList, updateInputValue]);
 
-    return <input className={styles.country_input} type='text' onChange={handleCountryNameInput} value={countryName}></input>;
+    return <input className={styles.country_input} type='text' onChange={handleCountryNameInput} placeholder="Name" value={countryName}></input>;
 }

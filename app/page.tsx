@@ -11,6 +11,7 @@ import AddIcon from "./_assets/icons/Add.svg";
 import emojiRegex from "emoji-regex";
 import { CountryInput } from "./_components/CountryInput";
 import { v4 } from "uuid";
+import LoadingIcon from "./_components/LoadingIcon";
 
 const DEFAULT_COUNTRIES = ["🇧🇪 Belgium", "🇸🇪 Sweden", "🇫🇮 Finland"];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
@@ -27,12 +28,16 @@ type countryObjectId = {
 }
 
 // TODO in the future store ranking as an object with a title and ranking field in local storage, use a uuid as key and a list with al uuid's to look them up
+// TODO based on device type show emoji hint, windows: press windows + ; to open emoji keyboard, macos...
+// TODO highlight or show emoji hint based on failed onChange input in EmojiInputField in the handleInput function
 function Home()
 {
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
     const [countryObjectList, setCountryObjectIdList] = React.useState<countryObjectId[]>([]);
     const containsEmojiRegex = emojiRegex();
     const [title, setTitle] = React.useState("");
+    const [message, setMessage] = React.useState("");
+    const [isFormLoading, setFormLoading] = React.useState(false);
     const [hue, setHue] = React.useState<number>();
 
     const countriesToCountryObjectList = React.useCallback((countries: string[]): countryObjectId[] =>
@@ -207,6 +212,9 @@ function Home()
 
     const handleSubmit = React.useCallback((event: React.FormEvent<HTMLFormElement>) =>
     {
+        setFormLoading(true);
+        setMessage("");
+
         event.preventDefault();
 
         const myForm = event.target as HTMLFormElement;
@@ -219,23 +227,36 @@ function Home()
             record[key] = value.toString();
         });
 
-        // TODO 404/500 response does not alert error, simulate this on production by removing the hidden html form or disabling form detection or on localhost by waiting for timeout?
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams(record).toString(),
         })
-            .then(() => alert("succes"))
-            .catch((error) => alert(error));
+            .then((response) =>
+            {
+                if(response.status !== 200)
+                {
+                    throw new Error("Oops, I probably broke something :(. Please try again later.");
+                }
+                alert("succes");
+            })
+            .catch((error: Error) => alert(error.message))
+            .finally(() => setFormLoading(false));
+    }, []);
+
+    const handleMessageInput = React.useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    {
+        const newMessage = event.target.value;
+        setMessage(newMessage);
     }, []);
 
     return (<>
         <header className={styles.header} >
-            <input className={styles.title_input} onChange={handleTitleInput} type='text' value={title} ></input>
+            <input className={styles.title_input} onChange={handleTitleInput} type='text' placeholder="Title" value={title} ></input>
         </header>
         <main className={styles.main}>
             <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId='countries'>
+                <Droppable droppableId='countries' >
                     {
                         (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
                             <ol className={styles.country_list}>
@@ -276,9 +297,12 @@ function Home()
             <input type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
             <form className={styles.form} name="contact local vote" method="POST" data-netlify="true" onSubmit={handleSubmit} >
                 <input type="hidden" name="form-name" value="contact local vote" />
-                <label className={styles.form_label} htmlFor="message" >Leave a suggestion or message:</label>
-                <textarea className={styles.form_textarea} id="message" name="message"></textarea>
-                <button type="submit">Send</button>
+                {isFormLoading
+                    ? <><p className={styles.loading_label} >Sending message</p> <LoadingIcon /></>
+                    : <>
+                        <label className={styles.form_label} htmlFor="message" >Leave a suggestion or message:</label>
+                        <textarea rows={3} className={styles.form_textarea} id="message" name="message" value={message} onChange={handleMessageInput} ></textarea></>}
+                <button type="submit" disabled={isFormLoading} >Send</button>
             </form>
         </main></>);
 }
