@@ -2,16 +2,30 @@
     "name": "Local Vote",
     "short_name": "Local Vote",
     "icons": [
-      {
-        "src": "/icon.png",
-        "sizes": "500x500",
-        "type": "image/png",
-        "purpose": "any maskable"
-      }
+        {
+            "src": "/icon.png",
+            "sizes": "500x500",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
     ],
     "theme_color": "#F1E365",
     "background_color": "#FAF9EA",
     "start_url": "/",
     "display": "standalone",
-    "orientation": "portrait"
-  }
+    "orientation": "portrait",
+    "scope": "/",
+    "launch_handler": {
+        "client_mode": "focus-existing"
+    },
+    "lang": "en",
+    "description": "Make your own rankings.",
+    "display_override": [
+        "window-controls-overlay",
+        "fullscreen"
+    ],
+    "edge_side_panel": {
+        "preferred_width": 480
+    },
+    "id": "/"
+}
