@@ -292,14 +292,14 @@ function Home()
                                             ref={provided.innerRef}
                                             className={styles.country_list_item} >
                                             <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
-                                                <button className={styles.country_list_item_button} onClick={() => handleDelete(index)} >
+                                                <button aria-label="Remove ranking item" className={styles.country_list_item_button} onClick={() => handleDelete(index)} >
                                                     <DeleteIcon />
                                                 </button>
                                                 <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
                                                     {index + 1}.</p>
                                                     <EmojiInput emoji={emoji} countryName={countryName} setCountryObjectIdList={setCountryObjectIdList} index={index} updateInputValue={updateInputValue} />
                                                     <CountryInput emoji={emoji} countryName={countryName} setCountryObjectIdList={setCountryObjectIdList} index={index} updateInputValue={updateInputValue} />
-                                                    <div {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandleIcon /></div>
+                                                    <div aria-label="Drag handle" {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandleIcon /></div>
                                                 </div>
                                             </div>
 
@@ -314,12 +314,13 @@ function Home()
                     }
                 </Droppable>
             </DragDropContext>
-            <button className={styles.add_button} onClick={handelAddCountry}><AddIcon /></button>
+            <button className={styles.add_button} aria-label="Add ranking item" onClick={handelAddCountry}><AddIcon /></button>
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
             <button onClick={onButtonClick}>Download</button>
-            <input type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
-            <input type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
+            <label className={styles.form_label} htmlFor="hue" >Change app color</label>
+            <input id="hue" type="range" min={0} max={360} value={hue} onChange={handleHueInput} />
+            <input aria-label='App color value' type="number" min={0} max={360} value={hue === 0 ? "" : hue} onChange={handleHueInput} />
             <form className={styles.form} name="contact local vote" method="POST" data-netlify="true" onSubmit={handleSubmit} >
                 <input type="hidden" name="form-name" value="contact local vote" />
                 {isFormLoading
