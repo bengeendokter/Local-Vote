@@ -21,7 +21,7 @@ function RankingDetail({ params }: RankingDetailProps)
     }, [params.id, router]);
 
     return <>
-        <Link href={`/${params.id}/edit`}>Edit</Link><p>{localStorage.getItem(`${params.id}`)}</p></>;
+        <Link href={`/`}>Home</Link><br/><Link href={`/${params.id}/edit`}>Edit</Link><p>{localStorage.getItem(`${params.id}`)}</p></>;
 }
 
 export default RankingDetail;

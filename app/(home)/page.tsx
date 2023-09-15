@@ -12,7 +12,8 @@ type countryObjectId = {
 function Home()
 {
     return <>
-        <Link href={`/settings`}>Edit</Link><p>{localStorage.getItem(`ranking-ids`)}</p></>;
+        <Link href={`/settings`}>Settings</Link><br/>{JSON.parse(localStorage.getItem(`ranking-ids`) ?? "[]")
+        .map((id: string) => <><Link key={id} href={`/${id}`}>{id}</Link><br/></>)}</>;
 }
 
 export default Home;
