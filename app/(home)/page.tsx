@@ -23,5 +23,5 @@ export type InputProps = {
     countryName: string;
     setCountryObjectIdList: React.Dispatch<React.SetStateAction<countryObjectId[]>>;
     index: number;
-    updateInputValue: (newInputValue: countryObjectId[]) => void;
+    updateRanking: (newRanking: countryObjectId[]) => void;
 }
