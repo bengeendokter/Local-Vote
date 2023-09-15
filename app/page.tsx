@@ -18,6 +18,9 @@ const DEFAULT_COUNTRIES = ["🇦🇱 Albania", "🇦🇩 Andorra", "🇦🇲 Arm
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
 
+enum ErrorCause {
+    BAD_RESPONSE = "BAD_RESPONSE",
+  }
 interface QueryParams
 {
     inputValue: string[];
@@ -237,11 +240,19 @@ function Home()
             {
                 if(response.status !== 200)
                 {
-                    throw new Error(":( Oops, I probably broke something. Please try again later.");
+                    throw new Error(":( Oops, I probably broke something. Please try again later.", { cause: ErrorCause.BAD_RESPONSE });
                 }
-                alert("succes");
+                alert("Message send successfully, thank you for your feedback!");
             })
-            .catch((error: Error) => alert(error.message))
+            .catch((error: Error) =>
+{
+                if(error.cause === ErrorCause.BAD_RESPONSE)
+                {
+                    alert(error.message);
+                    return;
+                }
+                alert("Could not send the request. Please check your internet connection.");
+            })
             .finally(() => setFormLoading(false));
     }, []);
 
