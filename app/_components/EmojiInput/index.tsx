@@ -2,7 +2,7 @@
 import * as React from "react";
 import styles from "./emoji-input.module.css";
 import emojiRegex from "emoji-regex";
-import { InputProps } from "../../page";
+import { InputProps } from "../../(home)/page";
 
 function EmojiInput({ emoji, countryName, setCountryObjectIdList, index, updateInputValue }: InputProps)
 {

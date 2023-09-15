@@ -3,24 +3,26 @@
 import * as React from "react";
 import styles from "./home.module.css";
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from "react-beautiful-dnd";
-import useQueryParams from "./_hooks/useQueryParams";
-import EmojiInput from "./_components/EmojiInput";
-import DeleteIcon from "./_assets/icons/Delete.svg";
-import DragHandleIcon from "./_assets/icons/DragHandle.svg";
-import AddIcon from "./_assets/icons/Add.svg";
+import useQueryParams from "../_hooks/useQueryParams";
+import EmojiInput from "../_components/EmojiInput";
+import DeleteIcon from "../_assets/icons/Delete.svg";
+import DragHandleIcon from "../_assets/icons/DragHandle.svg";
+import AddIcon from "../_assets/icons/Add.svg";
 import emojiRegex from "emoji-regex";
-import { CountryInput } from "./_components/CountryInput";
+import { CountryInput } from "../_components/CountryInput";
 import { v4 } from "uuid";
-import LoadingIcon from "./_components/LoadingIcon";
+import LoadingIcon from "../_components/LoadingIcon";
 import { toPng } from "html-to-image";
+import Link from "next/link";
 
 const DEFAULT_COUNTRIES = ["🇦🇱 Albania", "🇦🇩 Andorra", "🇦🇲 Armenia", "🇦🇺 Australia", "🇦🇹 Austria", "🇦🇿 Azerbaijan", "🇧🇪 Belgium", "🇧🇦 Bosnia and Herzegovina", "🇧🇬 Bulgaria", "🇭🇷 Croatia", "🇨🇾 Cyprus", "🇨🇿 Czechia", "🇩🇰 Denmark", "🇪🇪 Estonia", "🇫🇮 Finland", "🇫🇷 France", "🇬🇪 Georgia", "🇩🇪 Germany", "🇬🇷 Greece", "🇭🇺 Hungary", "🇮🇸 Iceland", "🇮🇪 Ireland", "🇮🇱 Israel", "🇮🇹 Italy", "🇱🇻 Latvia", "🇱🇹 Lithuania", "🇱🇺 Luxembourg", "🇲🇹 Malta", "🇲🇩 Moldova", "🇲🇨 Monaco", "🇲🇪 Montenegro", "🇲🇦 Morocco", "🇳🇱 Netherlands", "🇲🇰 North Macedonia", "🇳🇴 Norway", "🇵🇱 Poland", "🇵🇹 Portugal", "🇷🇴 Romania", "🇸🇲 San Marino", "🇷🇸 Serbia", "🇸🇰 Slovakia", "🇸🇮 Slovenia", "🇪🇸 Spain", "🇸🇪 Sweden", "🇨🇭 Switzerland", "🇹🇷 Turkey", "🇺🇦 Ukraine", "🇬🇧 United Kingdom"];
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
 
-enum ErrorCause {
+enum ErrorCause
+{
     BAD_RESPONSE = "BAD_RESPONSE",
-  }
+}
 interface QueryParams
 {
     inputValue: string[];
@@ -247,7 +249,7 @@ function Home()
                 alert("Message send successfully, thank you for your feedback!");
             })
             .catch((error: Error) =>
-{
+            {
                 if(error.cause === ErrorCause.BAD_RESPONSE)
                 {
                     alert(error.message);
@@ -288,52 +290,53 @@ function Home()
     }, [imageRef]);
 
     return (<>
+        <Link href="/settings">Settings</Link>
         <header className={styles.header} >
             <input className={styles.title_input} onChange={handleTitleInput} type='text' placeholder="Title" value={title} ></input>
         </header>
         <main className={styles.main}>
             {isPageLoading
-            ?
+                ?
                 <div className={styles.page_loading_container}>
                     <p>Loading list...</p>
                     <LoadingIcon />
                 </div>
-            :
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId='countries' >
-                    {
-                        (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
-                            <ol ref={imageRef} className={styles.country_list}>
-                                {countryObjectList.map(({ country, id }) => { return { ...splitCountryInEmojiAndName(country), id }; }).map(({ emoji, name: countryName, id }, index) => <Draggable draggableId={id} index={index} key={id}>
-                                    {(provided, snapshot) =>
-                                    (
-                                        <li
-                                            {...provided.draggableProps}
-                                            ref={provided.innerRef}
-                                            className={styles.country_list_item} >
-                                            <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
-                                                <button aria-label="Remove ranking item" className={styles.country_list_item_button} onClick={() => handleDelete(index)} >
-                                                    <DeleteIcon />
-                                                </button>
-                                                <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
-                                                    {index + 1}.</p>
-                                                    <EmojiInput emoji={emoji} countryName={countryName} setCountryObjectIdList={setCountryObjectIdList} index={index} updateInputValue={updateInputValue} />
-                                                    <CountryInput emoji={emoji} countryName={countryName} setCountryObjectIdList={setCountryObjectIdList} index={index} updateInputValue={updateInputValue} />
-                                                    <div aria-label="Drag handle" {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandleIcon /></div>
+                :
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable droppableId='countries' >
+                        {
+                            (provided) => (<div ref={provided.innerRef} {...provided.droppableProps} >
+                                <ol ref={imageRef} className={styles.country_list}>
+                                    {countryObjectList.map(({ country, id }) => { return { ...splitCountryInEmojiAndName(country), id }; }).map(({ emoji, name: countryName, id }, index) => <Draggable draggableId={id} index={index} key={id}>
+                                        {(provided, snapshot) =>
+                                        (
+                                            <li
+                                                {...provided.draggableProps}
+                                                ref={provided.innerRef}
+                                                className={styles.country_list_item} >
+                                                <div className={[styles.country_list_item_content, snapshot.isDragging ? styles.active : ""].join(" ")}>
+                                                    <button aria-label="Remove ranking item" className={styles.country_list_item_button} onClick={() => handleDelete(index)} >
+                                                        <DeleteIcon />
+                                                    </button>
+                                                    <div className={styles.country_list_item_edit} ><p className={styles.rank_number}>
+                                                        {index + 1}.</p>
+                                                        <EmojiInput emoji={emoji} countryName={countryName} setCountryObjectIdList={setCountryObjectIdList} index={index} updateInputValue={updateInputValue} />
+                                                        <CountryInput emoji={emoji} countryName={countryName} setCountryObjectIdList={setCountryObjectIdList} index={index} updateInputValue={updateInputValue} />
+                                                        <div aria-label="Drag handle" {...provided.dragHandleProps} className={styles.country_drag_handle} ><DragHandleIcon /></div>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                        </li>
-                                    )
-                                    }
-                                </Draggable>)}
-                            </ol>
+                                            </li>
+                                        )
+                                        }
+                                    </Draggable>)}
+                                </ol>
 
-                            {provided.placeholder}
-                        </div>)
-                    }
-                </Droppable>
-            </DragDropContext>
+                                {provided.placeholder}
+                            </div>)
+                        }
+                    </Droppable>
+                </DragDropContext>
             }
             <button className={styles.add_button} aria-label="Add ranking item" onClick={handelAddCountry}><AddIcon /></button>
             <button onClick={handleReset}>Reset</button>
