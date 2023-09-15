@@ -38,6 +38,8 @@ type RankingEditProps = {
     params: { id: string }
 }
 
+// TODO based on device type show emoji hint, windows: press windows + ; to open emoji keyboard, macos...
+// TODO highlight or show emoji hint based on failed onChange input in EmojiInputField in the handleInput function
 function RankingEdit({ params }: RankingEditProps)
 {
     const router = useRouter();
