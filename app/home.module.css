@@ -25,9 +25,18 @@
     gap: 0.8em;
 }
 
-.main > div
+.main>div
 {
     max-width: 28em;
+}
+
+.page_loading_container
+{
+    min-height: 32em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .country_list

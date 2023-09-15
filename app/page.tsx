@@ -42,6 +42,7 @@ function Home()
     const [title, setTitle] = React.useState("");
     const [message, setMessage] = React.useState("");
     const [isFormLoading, setFormLoading] = React.useState(false);
+    const [isPageLoading, setPageLoading] = React.useState(true);
     const [hue, setHue] = React.useState<number>();
 
     const countriesToCountryObjectList = React.useCallback((countries: string[]): countryObjectId[] =>
@@ -113,6 +114,7 @@ function Home()
         const storedHue = parseInt(localStorage.getItem("hue") ?? "54");
         setHue(storedHue);
         document.documentElement.style.setProperty("--hue", storedHue.toString());
+        setPageLoading(false);
     }, [countriesToCountryObjectList, queryParams, setQueryParams]);
 
     const handleReset = React.useCallback(() =>
@@ -290,6 +292,13 @@ function Home()
             <input className={styles.title_input} onChange={handleTitleInput} type='text' placeholder="Title" value={title} ></input>
         </header>
         <main className={styles.main}>
+            {isPageLoading
+            ?
+                <div className={styles.page_loading_container}>
+                    <p>Loading list...</p>
+                    <LoadingIcon />
+                </div>
+            :
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId='countries' >
                     {
@@ -325,6 +334,7 @@ function Home()
                     }
                 </Droppable>
             </DragDropContext>
+            }
             <button className={styles.add_button} aria-label="Add ranking item" onClick={handelAddCountry}><AddIcon /></button>
             <button onClick={handleReset}>Reset</button>
             <button onClick={handleCalculateTotal}>Calculate Total</button>
