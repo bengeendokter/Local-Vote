@@ -1,0 +1,178 @@
+.header
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title_input
+{
+    width: 7.8em;
+    height: 1.5em;
+    font-size: 2.1rem;
+    font-weight: bold;
+    line-height: 1.2;
+    text-align: center;
+    margin-block-start: 0.6em;
+}
+
+.main
+{
+    font-family: 'Twemoji', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8em;
+}
+
+.main>div
+{
+    max-width: 28em;
+}
+
+.page_loading_container
+{
+    min-height: 32em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.country_list
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-wrap: nowrap;
+    margin-inline: 0.3em;
+    margin-block-start: 0.8em;
+    margin-block-end: 0em;
+}
+
+.country_list_item
+{
+    display: block;
+}
+
+.country_list_item_content
+{
+    --list-item-color: var(--clr-interact);
+    display: flex;
+    gap: 12px;
+    height: 48px;
+    --input-height: 41px;
+}
+
+.country_list_item_button
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--list-item-color);
+    border: 1px solid var(--clr-text);
+    aspect-ratio: 1;
+    border-radius: var(--br-s);
+}
+
+.country_list_item_button:hover
+{
+    background-color: var(--clr-active);
+}
+
+.country_list_item:last-of-type .country_list_item_button
+{
+    border-radius: var(--br-s) var(--br-s) var(--br-s) var(--br-m);
+}
+
+.country_list_item:first-of-type .country_list_item_button
+{
+    border-radius: var(--br-m) var(--br-s) var(--br-s) var(--br-s);
+}
+
+.country_list_item_edit
+{
+    background-color: var(--list-item-color);
+    border: 1px solid var(--clr-text);
+    display: flex;
+    align-items: center;
+    padding: 0px 10px 0px 5px;
+    flex-wrap: nowrap;
+    gap: 0.4em;
+    padding-block: 0.2em;
+    border-radius: var(--br-s);
+}
+
+.country_list_item:last-of-type .country_list_item_edit
+{
+    border-radius: var(--br-s) var(--br-s) var(--br-m) var(--br-s);
+}
+
+.country_list_item:first-of-type .country_list_item_edit
+{
+    border-radius: var(--br-s) var(--br-m) var(--br-s) var(--br-s);
+}
+
+.active
+{
+    --list-item-color: var(--clr-active);
+}
+
+.rank_number
+{
+    width: 2.7ch;
+    text-align: end;
+    font-size: 1.2rem;
+    line-height: 1.2;
+}
+
+.country_drag_handle
+{
+    display: flex;
+    width: 2.8em;
+    height: 100%;
+    padding-inline: 0.4em;
+    align-items: center;
+}
+
+.add_button
+{
+    width: 3em;
+    aspect-ratio: 1;
+    border-radius: var(--br-m);
+    background-color: var(--clr-interact);
+    border: 1px solid var(--clr-text);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.add_button:hover
+{
+    background-color: var(--clr-active);
+}
+
+.form
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8em;
+    margin-block-end: 1.2em;
+}
+
+.form_label
+{
+    font-weight: 600;
+}
+
+.form_textarea
+{
+    background-color: var(--clr-background);
+}
+
+.loading_label
+{
+    font-weight: 600;
+}

@@ -14,14 +14,14 @@ function RankingDetail({ params }: RankingDetailProps)
 
     React.useEffect(() =>
     {
-        if(params.id === "404")
+        if(localStorage.getItem(`${params.id}`) === null)
         {
             router.replace(`/${params.id}/not-found`);
         }
     }, [params.id, router]);
 
     return <>
-        <Link href={`/${params.id}/edit`}>Edit</Link><p>{`Detail ${params.id}`}</p></>;
+        <Link href={`/${params.id}/edit`}>Edit</Link><p>{localStorage.getItem(`${params.id}`)}</p></>;
 }
 
 export default RankingDetail;
