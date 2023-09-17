@@ -1,12 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import * as React from "react";
 import BackArrowIcon from "../_assets/icons/BackArrow.svg";
+import EditIcon from "../_assets/icons/Edit.svg";
+import DeleteIcon from "../_assets/icons/Delete.svg";
 import { useRouter } from "next/navigation";
 import { LocalStorageKeys } from "../(home)/page";
 import Button from "../_components/Button";
 import Header from "../_components/Header";
+import styles from "./detail.module.css";
 
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
@@ -55,9 +57,9 @@ function RankingDetail({ params }: RankingDetailProps)
         <main>
             <p>{localStorage.getItem(`${params.id}`)}</p>
         </main>
-        <div>
-            <Button href={`/${params.id}/edit`}>Edit</Button>
-            <Button onClick={handelDeleteRanking} >Delete</Button>
+        <div className={styles.button_container} >
+            <Button href={`/${params.id}/edit`}><EditIcon/></Button>
+            <Button onClick={handelDeleteRanking} ><DeleteIcon/></Button>
         </div>
     </>;
 }

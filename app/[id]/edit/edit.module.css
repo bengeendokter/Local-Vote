@@ -65,6 +65,7 @@
     border: 1px solid var(--clr-text);
     aspect-ratio: 1;
     border-radius: var(--br-s);
+    padding: 10px;
 }
 
 .country_list_item_button:hover

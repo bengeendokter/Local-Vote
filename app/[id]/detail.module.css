@@ -1,0 +1,10 @@
+.button_container
+{
+    display: flex;
+    gap: 5em;
+    justify-content: center;
+    position: sticky;
+    bottom: 0;
+    padding: 0.4em;
+    background: linear-gradient(to bottom, rgba(248, 250, 234, 0)  0%, var(--clr-background) 100%);
+}
