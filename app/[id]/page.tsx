@@ -20,6 +20,13 @@ function RankingDetail({ params }: RankingDetailProps)
         }
     }, [params.id, router]);
 
+    // TODO remove list
+    // prompt if user wants tot delete
+    // find index of this id in list of id's if exist
+    // remove from list
+    // remove ranking entry from local storage
+    // navigate back to home
+
     return <>
         <Link href={`/`}>Home</Link><br/><Link href={`/${params.id}/edit`}>Edit</Link><p>{localStorage.getItem(`${params.id}`)}</p></>;
 }
