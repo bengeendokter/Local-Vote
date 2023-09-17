@@ -9,6 +9,7 @@ import EmojiInput from "../../_components/Input/EmojiInput";
 import DeleteIcon from "../../_assets/icons/Delete.svg";
 import DragHandleIcon from "../../_assets/icons/DragHandle.svg";
 import AddIcon from "../../_assets/icons/Add.svg";
+import BackArrowIcon from "../../_assets/icons/BackArrow.svg";
 import emojiRegex from "emoji-regex";
 import { CountryInput } from "../../_components/Input/CountryInput";
 import { v4 } from "uuid";
@@ -185,8 +186,8 @@ function RankingEdit({ params }: RankingEditProps)
     }, [countryObjectList, countryObjectListToCountries, params.id, setQueryParams]);
 
     return (<>
-        <Link href={`/${params.id}`}>Detail</Link><p>{`Edit ${params.id}`}</p>
         <header className={styles.header} >
+            <Link className={styles.button} aria-label="Go back" href={`/${params.id}`}><BackArrowIcon/></Link>
             <input className={styles.title_input} onChange={handleTitleInput} type='text' placeholder="Title" value={title} ></input>
         </header>
         <main className={styles.main}>
@@ -233,7 +234,7 @@ function RankingEdit({ params }: RankingEditProps)
                     </Droppable>
                 </DragDropContext>
             }
-            <button className={styles.add_button} aria-label="Add ranking item" onClick={handelAddCountry}><AddIcon /></button>
+            <button className={styles.button} aria-label="Add ranking item" onClick={handelAddCountry}><AddIcon /></button>
         </main></>);
 }
 

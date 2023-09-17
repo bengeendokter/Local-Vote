@@ -1,8 +1,11 @@
 .header
 {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    gap: 1.7em;
+    margin-block-start: 0.6em;
+    justify-content: center;
 }
 
 .title_input
@@ -13,7 +16,6 @@
     font-weight: bold;
     line-height: 1.2;
     text-align: center;
-    margin-block-start: 0.6em;
 }
 
 .main
@@ -135,7 +137,7 @@
     align-items: center;
 }
 
-.add_button
+.button
 {
     width: 3em;
     aspect-ratio: 1;
@@ -148,7 +150,7 @@
     justify-content: center;
 }
 
-.add_button:hover
+.button:hover
 {
     background-color: var(--clr-active);
 }
