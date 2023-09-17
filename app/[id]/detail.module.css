@@ -1,9 +1,24 @@
+.h1
+{
+    margin-block: 1px;
+    width: 7.8em;
+    height: 1.5em;
+    display: flex;
+    align-items: center;
+}
+
+.ranking_list
+{
+    max-width: 28em;
+    margin: auto;
+}
+
 .button_container
 {
     display: flex;
     gap: 5em;
     justify-content: center;
-    position: sticky;
+    position: fixed;
     bottom: 0;
     padding: 0.4em;
     background: linear-gradient(to bottom, rgba(248, 250, 234, 0)  0%, var(--clr-background) 100%);

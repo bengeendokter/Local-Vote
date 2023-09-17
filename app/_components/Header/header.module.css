@@ -1,9 +1,11 @@
 .header
 {
+    gap: 2em;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1.7em;
+    justify-content: flex-start;
+    max-width: 22em;
+    margin: auto;
     margin-block-start: 0.6em;
-    justify-content: center;
 }
