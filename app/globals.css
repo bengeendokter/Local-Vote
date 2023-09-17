@@ -65,7 +65,11 @@ html
 {
     background-color: var(--clr-background);
     color: var(--clr-text);
-    font-family: 'Roboto Flex';
+}
+
+*
+{
+    font-family: 'Twemoji', 'Roboto Flex', sans-serif;
 }
 
 p
@@ -86,7 +90,6 @@ div
 
 input
 {
-    font-family: "Twemoji", 'Roboto Flex';
     background-color: var(--clr-background);
     border-radius: var(--br-s);
 }
