@@ -5,12 +5,12 @@ import * as React from "react";
 import styles from "./edit.module.css";
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from "react-beautiful-dnd";
 import useQueryParams from "../../_hooks/useQueryParams";
-import EmojiInput from "../../_components/EmojiInput";
+import EmojiInput from "../../_components/Input/EmojiInput";
 import DeleteIcon from "../../_assets/icons/Delete.svg";
 import DragHandleIcon from "../../_assets/icons/DragHandle.svg";
 import AddIcon from "../../_assets/icons/Add.svg";
 import emojiRegex from "emoji-regex";
-import { CountryInput } from "../../_components/CountryInput";
+import { CountryInput } from "../../_components/Input/CountryInput";
 import { v4 } from "uuid";
 import LoadingIcon from "../../_components/LoadingIcon";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,7 @@ interface QueryParams
     ranking: string[];
 }
 
-type countryObjectId = {
+export type countryObjectId = {
     country: string;
     id: string;
 }
@@ -30,7 +30,12 @@ type RankingEditProps = {
     params: { id: string }
 }
 
-type StoredRanking = {
+type countryObject = {
+    emoji: string;
+    name: string;
+}
+
+export type StoredRanking = {
     title: string;
     ranking: string[];
 }
@@ -131,10 +136,6 @@ function RankingEdit({ params }: RankingEditProps)
         });
     }, [updateRanking]);
 
-    type countryObject = {
-        emoji: string;
-        name: string;
-    }
 
     const splitCountryInEmojiAndName = React.useCallback((country: string): countryObject =>
     {

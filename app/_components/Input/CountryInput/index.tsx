@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import styles from "./country-input.module.css";
-import { InputProps } from "../../(home)/page";
+import { InputProps } from "..";
 
 export function CountryInput({ emoji, countryName, setCountryObjectIdList, index, updateRanking }: InputProps)
 {
