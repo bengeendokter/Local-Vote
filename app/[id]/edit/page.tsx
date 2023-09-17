@@ -1,20 +1,21 @@
 "use client";
 
-import Link from "next/link";
 import * as React from "react";
 import styles from "./edit.module.css";
 import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from "react-beautiful-dnd";
 import useQueryParams from "../../_hooks/useQueryParams";
-import EmojiInput from "../../_components/Input/EmojiInput";
+import EmojiInput from "../../_components/InputField/EmojiInput";
 import DeleteIcon from "../../_assets/icons/Delete.svg";
 import DragHandleIcon from "../../_assets/icons/DragHandle.svg";
 import AddIcon from "../../_assets/icons/Add.svg";
 import BackArrowIcon from "../../_assets/icons/BackArrow.svg";
 import emojiRegex from "emoji-regex";
-import { CountryInput } from "../../_components/Input/CountryInput";
+import CountryInput from "../../_components/InputField/CountryInput";
 import { v4 } from "uuid";
 import LoadingIcon from "../../_components/LoadingIcon";
 import { useRouter } from "next/navigation";
+import Header from "../../_components/Header";
+import Button from "../../_components/Button";
 
 interface QueryParams
 {
@@ -186,10 +187,10 @@ function RankingEdit({ params }: RankingEditProps)
     }, [countryObjectList, countryObjectListToCountries, params.id, setQueryParams]);
 
     return (<>
-        <header className={styles.header} >
-            <Link className={styles.button} aria-label="Go back" href={`/${params.id}`}><BackArrowIcon/></Link>
-            <input className={styles.title_input} onChange={handleTitleInput} type='text' placeholder="Title" value={title} ></input>
-        </header>
+        <Header>
+            <Button aria-label="Go back" href={`/${params.id}`}><BackArrowIcon /></Button>
+            <input disabled={isPageLoading} className={styles.title_input} onChange={handleTitleInput} type='text' placeholder="Title" value={title}></input>
+        </Header>
         <main className={styles.main}>
             {isPageLoading
                 ?
@@ -234,7 +235,7 @@ function RankingEdit({ params }: RankingEditProps)
                     </Droppable>
                 </DragDropContext>
             }
-            <button className={styles.button} aria-label="Add ranking item" onClick={handelAddCountry}><AddIcon /></button>
+            <Button aria-label="Add ranking item" onClick={handelAddCountry}><AddIcon /></Button>
         </main></>);
 }
 

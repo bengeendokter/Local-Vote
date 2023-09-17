@@ -3,7 +3,7 @@ import * as React from "react";
 import styles from "./country-input.module.css";
 import { InputProps } from "..";
 
-export function CountryInput({ emoji, countryName, setCountryObjectIdList, index, updateRanking }: InputProps)
+function CountryInput({ emoji, countryName, setCountryObjectIdList, index, updateRanking }: InputProps)
 {
     const handleCountryNameInput = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) =>
     {
@@ -21,3 +21,5 @@ export function CountryInput({ emoji, countryName, setCountryObjectIdList, index
 
     return <input className={styles.country_input} type='text' onChange={handleCountryNameInput} placeholder="Name" value={countryName}></input>;
 }
+
+export default CountryInput;

@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import * as React from "react";
+import BackArrowIcon from "../_assets/icons/BackArrow.svg";
 import { useRouter } from "next/navigation";
 import { LocalStorageKeys } from "../(home)/page";
+import Button from "../_components/Button";
+import Header from "../_components/Header";
 
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
@@ -46,10 +49,16 @@ function RankingDetail({ params }: RankingDetailProps)
     }, [params.id, router]);
 
     return <>
-        <Link href={`/`}>Home</Link>
-        <br /><Link href={`/${params.id}/edit`}>Edit</Link>
-        <p>{localStorage.getItem(`${params.id}`)}</p>
-        <button onClick={handelDeleteRanking} >Delete</button>
+        <Header>
+            <Button href={`/`}><BackArrowIcon/></Button>
+        </Header>
+        <main>
+            <p>{localStorage.getItem(`${params.id}`)}</p>
+        </main>
+        <div>
+            <Button href={`/${params.id}/edit`}>Edit</Button>
+            <Button onClick={handelDeleteRanking} >Delete</Button>
+        </div>
     </>;
 }
 

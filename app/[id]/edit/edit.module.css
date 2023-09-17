@@ -1,13 +1,3 @@
-.header
-{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1.7em;
-    margin-block-start: 0.6em;
-    justify-content: center;
-}
-
 .title_input
 {
     width: 7.8em;
@@ -135,24 +125,6 @@
     height: 100%;
     padding-inline: 0.4em;
     align-items: center;
-}
-
-.button
-{
-    width: 3em;
-    aspect-ratio: 1;
-    border-radius: var(--br-m);
-    background-color: var(--clr-interact);
-    border: 1px solid var(--clr-text);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.button:hover
-{
-    background-color: var(--clr-active);
 }
 
 .form
