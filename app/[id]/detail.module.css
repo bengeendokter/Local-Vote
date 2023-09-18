@@ -96,3 +96,12 @@
     padding: 0.4em;
     background: linear-gradient(to bottom, rgba(248, 250, 234, 0) 0%, var(--clr-background) 100%);
 }
+
+.page_loading_container
+{
+    min-height: 32em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

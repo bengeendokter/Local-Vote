@@ -5,6 +5,7 @@ import BackArrowIcon from "../_assets/icons/BackArrow.svg";
 import EditIcon from "../_assets/icons/Edit.svg";
 import DeleteIcon from "../_assets/icons/Delete.svg";
 import HeartIcon from "../_assets/icons/Heart.svg";
+import LoadingIcon from "../_components/LoadingIcon";
 import { useRouter } from "next/navigation";
 import { LocalStorageKeys } from "../(home)/page";
 import Button from "../_components/Button";
@@ -24,6 +25,7 @@ function RankingDetail({ params }: RankingDetailProps)
 {
     const router = useRouter();
     const [rankingObject, setRankingObject] = React.useState<StoredRanking>({ title: "Loading...", ranking: [] });
+    const [isPageLoading, setPageLoading] = React.useState(true);
 
     React.useEffect(() =>
     {
@@ -36,7 +38,7 @@ function RankingDetail({ params }: RankingDetailProps)
 
         const storedRankingObject: StoredRanking = JSON.parse(storedRanking);
         setRankingObject(storedRankingObject);
-
+        setPageLoading(false);
     }, [params.id, router]);
 
     const calculateTotalRanking = React.useCallback(() =>
@@ -86,6 +88,13 @@ function RankingDetail({ params }: RankingDetailProps)
             <h1 className={styles.h1} >{rankingObject.title}</h1>
         </Header>
         <main>
+        {isPageLoading
+                ?
+                <div className={styles.page_loading_container}>
+                    <p>Loading list...</p>
+                    <LoadingIcon />
+                </div>
+                :
             <ol className={styles.ranking_list} >
                 {calculateTotalRanking().map(([country, points]) => { return { ...splitCountryInEmojiAndName(country), points }; }).map(({ emoji, name, points }, index) => <>
                 <li className={styles.country_container} key={index} >
@@ -98,6 +107,7 @@ function RankingDetail({ params }: RankingDetailProps)
                     </li>
                 </>)}
             </ol>
+            }
         </main>
         <div className={styles.button_container} >
             <Button href={`/${params.id}/edit`}><EditIcon /></Button>

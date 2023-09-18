@@ -54,7 +54,7 @@ function RankingEdit({ params }: RankingEditProps)
 
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
     const [countryObjectList, setCountryObjectIdList] = React.useState<countryObjectId[]>([]);
-    const [title, setTitle] = React.useState("");
+    const [title, setTitle] = React.useState("Loading...");
     const [isPageLoading, setPageLoading] = React.useState(true);
 
     const countriesToCountryObjectList = React.useCallback((countries: string[]): countryObjectId[] =>
