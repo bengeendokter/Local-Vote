@@ -9,13 +9,13 @@ import DeleteIcon from "../../_assets/icons/Delete.svg";
 import DragHandleIcon from "../../_assets/icons/DragHandle.svg";
 import AddIcon from "../../_assets/icons/Add.svg";
 import BackArrowIcon from "../../_assets/icons/BackArrow.svg";
-import emojiRegex from "emoji-regex";
 import CountryInput from "../../_components/InputField/CountryInput";
 import { v4 } from "uuid";
 import LoadingIcon from "../../_components/LoadingIcon";
 import { useRouter } from "next/navigation";
 import Header from "../../_components/Header";
 import Button from "../../_components/Button";
+import splitCountryInEmojiAndName from "../splitCountryInEmojiAndName";
 
 interface QueryParams
 {
@@ -30,11 +30,6 @@ export type countryObjectId = {
 
 type RankingEditProps = {
     params: { id: string }
-}
-
-type countryObject = {
-    emoji: string;
-    name: string;
 }
 
 export type StoredRanking = {
@@ -59,7 +54,6 @@ function RankingEdit({ params }: RankingEditProps)
 
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
     const [countryObjectList, setCountryObjectIdList] = React.useState<countryObjectId[]>([]);
-    const containsEmojiRegex = emojiRegex();
     const [title, setTitle] = React.useState("");
     const [isPageLoading, setPageLoading] = React.useState(true);
 
@@ -137,20 +131,6 @@ function RankingEdit({ params }: RankingEditProps)
             return newCountries;
         });
     }, [updateRanking]);
-
-
-    const splitCountryInEmojiAndName = React.useCallback((country: string): countryObject =>
-    {
-        const countrySplitArray = country.split(" ");
-        const possibleEmoji = countrySplitArray[0];
-        const matchArray = possibleEmoji.match(containsEmojiRegex);
-
-        const containsEmoji = matchArray !== null;
-        const emoji = containsEmoji ? matchArray[0] : "";
-        const name = containsEmoji ? countrySplitArray.slice(1).join(" ") : country;
-
-        return { emoji, name };
-    }, [containsEmojiRegex]);
 
     const handleDelete = React.useCallback((index: number) =>
     {

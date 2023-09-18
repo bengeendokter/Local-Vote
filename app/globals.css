@@ -33,32 +33,32 @@
 
 ::selection
 {
-  background: var(--clr-selection);
-  color: var(--clr-active)
+    background: var(--clr-selection);
+    color: var(--clr-active)
 }
 
 /* scrollbar */
 ::-webkit-scrollbar
 {
-  width: 13px;
+    width: 13px;
 }
 
 ::-webkit-scrollbar-track
 {
-  background: var(--clr-background);
+    background: var(--clr-background);
 }
 
 ::-webkit-scrollbar-track:hover
 {
-  background: var(--clr-active);
+    background: var(--clr-active);
 }
 
 ::-webkit-scrollbar-thumb
 {
-  background: var(--clr-interact);
-  border: 1.5px solid transparent;
-  background-clip: content-box;
-  border-radius: 100vw;
+    background: var(--clr-interact);
+    border: 1.5px solid transparent;
+    background-clip: content-box;
+    border-radius: 100vw;
 }
 
 html
@@ -81,6 +81,11 @@ ol,
 button
 {
     padding: 0px;
+}
+
+li
+{
+    display: block;
 }
 
 div
