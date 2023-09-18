@@ -99,6 +99,11 @@ input
     border-radius: var(--br-s);
 }
 
+main
+{
+    padding-inline: 0.2em;
+}
+
 svg
 {
     fill: var(--clr-text);
