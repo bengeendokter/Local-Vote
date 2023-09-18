@@ -4,6 +4,7 @@ import * as React from "react";
 import BackArrowIcon from "../_assets/icons/BackArrow.svg";
 import EditIcon from "../_assets/icons/Edit.svg";
 import DeleteIcon from "../_assets/icons/Delete.svg";
+import HeartIcon from "../_assets/icons/Heart.svg";
 import { useRouter } from "next/navigation";
 import { LocalStorageKeys } from "../(home)/page";
 import Button from "../_components/Button";
@@ -87,7 +88,14 @@ function RankingDetail({ params }: RankingDetailProps)
         <main>
             <ol className={styles.ranking_list} >
                 {calculateTotalRanking().map(([country, points]) => { return { ...splitCountryInEmojiAndName(country), points }; }).map(({ emoji, name, points }, index) => <>
-                <li key={index} >{index + 1}. {emoji} {name} {points}</li>
+                <li className={styles.country_container} key={index} >
+                    <div className={styles.country_content} >
+                    <div className={styles.rank} >{index + 1}.</div>
+                    <div className={styles.emoji}>{emoji}</div>
+                    <div className={styles.country_name}>{name}</div>
+                    </div>
+                    <div className={styles.points}>{points !== 0 && <HeartIcon/>}{points !== 0 && points}</div>
+                    </li>
                 </>)}
             </ol>
         </main>
