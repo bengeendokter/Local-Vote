@@ -104,6 +104,15 @@ main
     padding-inline: 0.2em;
 }
 
+h1
+{
+    margin-block: 1px;
+    width: 7.8em;
+    height: 1.5em;
+    display: flex;
+    align-items: center;
+}
+
 svg
 {
     fill: var(--clr-text);

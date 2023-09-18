@@ -6,6 +6,11 @@ import Link from "next/link";
 import { v4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { StoredRanking } from "../[id]/edit/page";
+import styles from "./home.module.css";
+import Button from "../_components/Button";
+import AddIcon from "../_assets/icons/Add.svg";
+import SettingsIcon from "../_assets/icons/Settings.svg";
+import Header from "../_components/Header";
 
 const DEFAULT_COUNTRIES = ["🇦🇱 Albania", "🇦🇩 Andorra", "🇦🇲 Armenia", "🇦🇺 Australia", "🇦🇹 Austria", "🇦🇿 Azerbaijan", "🇧🇪 Belgium", "🇧🇦 Bosnia and Herzegovina", "🇧🇬 Bulgaria", "🇭🇷 Croatia", "🇨🇾 Cyprus", "🇨🇿 Czechia", "🇩🇰 Denmark", "🇪🇪 Estonia", "🇫🇮 Finland", "🇫🇷 France", "🇬🇪 Georgia", "🇩🇪 Germany", "🇬🇷 Greece", "🇭🇺 Hungary", "🇮🇸 Iceland", "🇮🇪 Ireland", "🇮🇱 Israel", "🇮🇹 Italy", "🇱🇻 Latvia", "🇱🇹 Lithuania", "🇱🇺 Luxembourg", "🇲🇹 Malta", "🇲🇩 Moldova", "🇲🇨 Monaco", "🇲🇪 Montenegro", "🇲🇦 Morocco", "🇳🇱 Netherlands", "🇲🇰 North Macedonia", "🇳🇴 Norway", "🇵🇱 Poland", "🇵🇹 Portugal", "🇷🇴 Romania", "🇸🇲 San Marino", "🇷🇸 Serbia", "🇸🇰 Slovakia", "🇸🇮 Slovenia", "🇪🇸 Spain", "🇸🇪 Sweden", "🇨🇭 Switzerland", "🇹🇷 Turkey", "🇺🇦 Ukraine", "🇬🇧 United Kingdom"];
 
@@ -34,10 +39,15 @@ function Home()
     }, [router]);
 
     return <>
-        <Link href={`/settings`}>Settings</Link>
-        <br />{JSON.parse(localStorage.getItem(LocalStorageKeys.RANKING_IDS) ?? "[]")
-            .map((id: string) => <><Link key={id} href={`/${id}`}>{id}</Link><br /></>)}
-        <br /><button onClick={handelAddRanking} >Add</button> </>;
+        <Header>
+            <h1  >Your rankings</h1>
+            <Button href={`/settings`}><SettingsIcon /></Button>
+        </Header>
+        <main className={styles.main} >
+        {JSON.parse(localStorage.getItem(LocalStorageKeys.RANKING_IDS) ?? "[]")
+            .map((id: string) => <><Button key={id} href={`/${id}`}>{id}</Button></>)}
+        <Button onClick={handelAddRanking} ><AddIcon /></Button>
+        </main> </>;
 }
 
 export default Home;

@@ -85,7 +85,7 @@ function RankingDetail({ params }: RankingDetailProps)
     return <>
         <Header>
             <Button href={`/`}><BackArrowIcon /></Button>
-            <h1 className={styles.h1} >{rankingObject.title}</h1>
+            <h1>{rankingObject.title}</h1>
         </Header>
         <main>
         {isPageLoading
