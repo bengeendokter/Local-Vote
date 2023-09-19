@@ -6,12 +6,14 @@ import Link, { LinkProps } from "next/link";
 type ActionButton = {
     onClick: React.MouseEventHandler<HTMLButtonElement>;
     children: React.ReactNode;
+    className?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 type NavigationButton =
 {
     href: string;
     children: React.ReactNode;
+    className?: string;
 } & LinkProps;
 
 type ButtonProps = ActionButton | NavigationButton;
@@ -21,8 +23,8 @@ function Button(props: ButtonProps)
 
     if("href" in props)
     {
-        const { href, children, ...rest } = props;
-        return <><Link href={href} className={styles.button} {...rest}>{children}</Link></>;
+        const { href, children, className, ...rest } = props;
+        return <><Link href={href} className={[styles.button, className].join(" ")} {...rest}>{children}</Link></>;
     }
 
     if("onClick" in props)

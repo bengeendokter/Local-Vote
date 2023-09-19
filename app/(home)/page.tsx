@@ -2,7 +2,6 @@
 
 import * as React from "react";
 
-import Link from "next/link";
 import { v4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { StoredRanking } from "../[id]/edit/page";
@@ -18,6 +17,11 @@ export enum LocalStorageKeys
 {
     RANKING_IDS = "ranking-ids"
 }
+
+type StoredRankingWithId =
+    {
+        id: string
+    } & StoredRanking;
 
 function Home()
 {
@@ -44,9 +48,9 @@ function Home()
             <Button href={`/settings`}><SettingsIcon /></Button>
         </Header>
         <main className={styles.main} >
-        {JSON.parse(localStorage.getItem(LocalStorageKeys.RANKING_IDS) ?? "[]")
-            .map((id: string) => <><Button key={id} href={`/${id}`}>{id}</Button></>)}
-        <Button onClick={handelAddRanking} ><AddIcon /></Button>
+            {JSON.parse(localStorage.getItem(LocalStorageKeys.RANKING_IDS) ?? "[]")
+                .map((id: string) => { return { id, ...JSON.parse(localStorage.getItem(id) ?? "{}") }; }).filter((rankingObject: StoredRankingWithId) => rankingObject.title !== undefined).map(({ id, title }: StoredRankingWithId) => <><Button className={styles.ranking_link} key={id} href={`/${id}`}>{title}</Button></>)}
+            <Button onClick={handelAddRanking} ><AddIcon /></Button>
         </main> </>;
 }
 
