@@ -2,6 +2,8 @@
 
 const withPWA = require("@ducanh2912/next-pwa").default({
     dest: "public",
+    cacheOnFrontendNav: true,
+    aggressiveFrontEndNavCaching: true,
   });
 
 const nextConfig = {
