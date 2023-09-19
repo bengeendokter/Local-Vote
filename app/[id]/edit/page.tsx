@@ -16,6 +16,8 @@ import { useRouter } from "next/navigation";
 import Header from "../../_components/Header";
 import Button from "../../_components/Button";
 import splitCountryInEmojiAndName from "../splitCountryInEmojiAndName";
+import { StoredRanking } from "../../_types/storedRanking";
+import { CountryObjectId } from "../../_types/countryObjectId";
 
 interface QueryParams
 {
@@ -23,18 +25,8 @@ interface QueryParams
     ranking: string[];
 }
 
-export type countryObjectId = {
-    country: string;
-    id: string;
-}
-
 type RankingEditProps = {
     params: { id: string }
-}
-
-export type StoredRanking = {
-    title: string;
-    ranking: string[];
 }
 
 // TODO based on device type show emoji hint, windows: press windows + ; to open emoji keyboard, macos...
@@ -53,23 +45,23 @@ function RankingEdit({ params }: RankingEditProps)
 
 
     const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
-    const [countryObjectList, setCountryObjectIdList] = React.useState<countryObjectId[]>([]);
+    const [countryObjectList, setCountryObjectIdList] = React.useState<CountryObjectId[]>([]);
     const [title, setTitle] = React.useState("Loading...");
     const [isPageLoading, setPageLoading] = React.useState(true);
 
-    const countriesToCountryObjectList = React.useCallback((countries: string[]): countryObjectId[] =>
+    const countriesToCountryObjectList = React.useCallback((countries: string[]): CountryObjectId[] =>
     {
-        const countryObjectList: countryObjectId[] = countries.map((country) => { return { country, id: v4() }; });
+        const countryObjectList: CountryObjectId[] = countries.map((country) => { return { country, id: v4() }; });
         return countryObjectList;
     }, []);
 
-    const countryObjectListToCountries = React.useCallback((countryObjectList: countryObjectId[]): string[] =>
+    const countryObjectListToCountries = React.useCallback((countryObjectList: CountryObjectId[]): string[] =>
     {
         const countryList: string[] = countryObjectList.map(({ country }) => country);
         return countryList;
     }, []);
 
-    const updateRanking = React.useCallback((countryObjectIdList: countryObjectId[]) =>
+    const updateRanking = React.useCallback((countryObjectIdList: CountryObjectId[]) =>
     {
         const newRanking = countryObjectListToCountries(countryObjectIdList);
         const newStoredRanking: StoredRanking = { title, ranking: newRanking };

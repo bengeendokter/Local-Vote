@@ -1,11 +1,11 @@
 import * as React from "react";
-import { countryObjectId } from "../../[id]/edit/page";
+import { CountryObjectId } from "../../_types/countryObjectId";
 
 export type InputProps = {
     emoji: string;
     countryName: string;
-    setCountryObjectIdList: React.Dispatch<React.SetStateAction<countryObjectId[]>>;
+    setCountryObjectIdList: React.Dispatch<React.SetStateAction<CountryObjectId[]>>;
     index: number;
-    updateRanking: (newRanking: countryObjectId[]) => void;
+    updateRanking: (newRanking: CountryObjectId[]) => void;
 
 };
