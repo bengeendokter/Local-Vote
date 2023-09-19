@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 import Button from "../_components/Button";
 import Header from "../_components/Header";
 import styles from "./detail.module.css";
-import { StoredRanking } from "./edit/page";
+import { StoredRanking } from "../_types/storedRanking";
 import splitCountryInEmojiAndName from "./splitCountryInEmojiAndName";
-import LocalStorageKeys from "../_utils/localStorageKeys";
+import LocalStorageKeys from "../_types/localStorageKeys";
 
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
