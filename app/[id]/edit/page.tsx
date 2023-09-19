@@ -94,7 +94,6 @@ function RankingEdit({ params }: RankingEditProps)
         })();
 
         const nonNullRanking: StoredRanking = initialRanking === null ? { title: "", ranking: [] } : initialRanking;
-        console.log("nonNullRanking", nonNullRanking);
         const countryObjectList = countriesToCountryObjectList(nonNullRanking.ranking);
         setCountryObjectIdList(countryObjectList);
         setTitle(nonNullRanking.title);
