@@ -7,12 +7,12 @@ import DeleteIcon from "../_assets/icons/Delete.svg";
 import HeartIcon from "../_assets/icons/Heart.svg";
 import LoadingIcon from "../_components/LoadingIcon";
 import { useRouter } from "next/navigation";
-import { LocalStorageKeys } from "../(home)/page";
 import Button from "../_components/Button";
 import Header from "../_components/Header";
 import styles from "./detail.module.css";
 import { StoredRanking } from "./edit/page";
 import splitCountryInEmojiAndName from "./splitCountryInEmojiAndName";
+import LocalStorageKeys from "../_utils/localStorageKeys";
 
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
@@ -88,25 +88,25 @@ function RankingDetail({ params }: RankingDetailProps)
             <h1>{rankingObject.title}</h1>
         </Header>
         <main>
-        {isPageLoading
+            {isPageLoading
                 ?
                 <div className={styles.page_loading_container}>
                     <p>Loading list...</p>
                     <LoadingIcon />
                 </div>
                 :
-            <ol className={styles.ranking_list} >
-                {calculateTotalRanking().map(([country, points]) => { return { ...splitCountryInEmojiAndName(country), points }; }).map(({ emoji, name, points }, index) => <>
-                <li className={styles.country_container} key={index} >
-                    <div className={styles.country_content} >
-                    <div className={styles.rank} >{index + 1}.</div>
-                    <div className={styles.emoji}>{emoji}</div>
-                    <div className={styles.country_name}>{name}</div>
-                    </div>
-                    <div className={styles.points}>{points !== 0 && <HeartIcon/>}{points !== 0 && points}</div>
-                    </li>
-                </>)}
-            </ol>
+                <ol className={styles.ranking_list} >
+                    {calculateTotalRanking().map(([country, points]) => { return { ...splitCountryInEmojiAndName(country), points }; }).map(({ emoji, name, points }, index) => <>
+                        <li className={styles.country_container} key={index} >
+                            <div className={styles.country_content} >
+                                <div className={styles.rank} >{index + 1}.</div>
+                                <div className={styles.emoji}>{emoji}</div>
+                                <div className={styles.country_name}>{name}</div>
+                            </div>
+                            <div className={styles.points}>{points !== 0 && <HeartIcon />}{points !== 0 && points}</div>
+                        </li>
+                    </>)}
+                </ol>
             }
         </main>
         <div className={styles.button_container} >
