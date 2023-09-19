@@ -75,7 +75,7 @@ function RankingDetail({ params }: RankingDetailProps)
 
         if(rankingIndex !== -1)
         {
-            localStorage.setItem(LocalStorageKeys.RANKING_IDS, JSON.stringify(rankingIds.toSpliced(rankingIndex)));
+            localStorage.setItem(LocalStorageKeys.RANKING_IDS, JSON.stringify(rankingIds.toSpliced(rankingIndex, 1)));
         }
 
         localStorage.removeItem(params.id);
