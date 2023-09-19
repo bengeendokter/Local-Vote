@@ -1,0 +1,18 @@
+.button
+{
+    width: 3em;
+    aspect-ratio: 1;
+    border-radius: var(--br-m);
+    background-color: var(--clr-interact);
+    border: 1px solid var(--clr-text);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+}
+
+.button:hover
+{
+    background-color: var(--clr-active);
+}

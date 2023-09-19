@@ -1,10 +1,3 @@
-.header
-{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .title_input
 {
     width: 7.8em;
@@ -12,17 +5,15 @@
     font-size: 2.1rem;
     font-weight: bold;
     line-height: 1.2;
-    text-align: center;
-    margin-block-start: 0.6em;
 }
 
 .main
 {
-    font-family: 'Twemoji', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.8em;
+    margin-block-end: 0.4em;
 }
 
 .main>div
@@ -50,11 +41,6 @@
     margin-block-end: 0em;
 }
 
-.country_list_item
-{
-    display: block;
-}
-
 .country_list_item_content
 {
     --list-item-color: var(--clr-interact);
@@ -73,6 +59,7 @@
     border: 1px solid var(--clr-text);
     aspect-ratio: 1;
     border-radius: var(--br-s);
+    padding: 10px;
 }
 
 .country_list_item_button:hover
@@ -133,24 +120,6 @@
     height: 100%;
     padding-inline: 0.4em;
     align-items: center;
-}
-
-.add_button
-{
-    width: 3em;
-    aspect-ratio: 1;
-    border-radius: var(--br-m);
-    background-color: var(--clr-interact);
-    border: 1px solid var(--clr-text);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.add_button:hover
-{
-    background-color: var(--clr-active);
 }
 
 .form

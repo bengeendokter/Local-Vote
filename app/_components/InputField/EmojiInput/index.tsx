@@ -2,9 +2,9 @@
 import * as React from "react";
 import styles from "./emoji-input.module.css";
 import emojiRegex from "emoji-regex";
-import { InputProps } from "../../page";
+import { InputProps } from "..";
 
-function EmojiInput({ emoji, countryName, setCountryObjectIdList, index, updateInputValue }: InputProps)
+function EmojiInput({ emoji, countryName, setCountryObjectIdList, index, updateRanking }: InputProps)
 {
     const [emojiText, setEmojiText] = React.useState(emoji);
     const containsEmojiRegex = emojiRegex();
@@ -20,7 +20,7 @@ function EmojiInput({ emoji, countryName, setCountryObjectIdList, index, updateI
                 const newCountries = Array.from(countries);
                 newCountries.splice(index, 1, { country: countryName, id: countries[index].id });
 
-                updateInputValue(newCountries);
+                updateRanking(newCountries);
                 return newCountries;
             });
             return;
@@ -39,10 +39,10 @@ function EmojiInput({ emoji, countryName, setCountryObjectIdList, index, updateI
             const newCountries = Array.from(countries);
             newCountries.splice(index, 1, { country: [newEmoji, countryName].join(" ").trim(), id: countries[index].id });
 
-            updateInputValue(newCountries);
+            updateRanking(newCountries);
             return newCountries;
         });
-    }, [containsEmojiRegex, countryName, emojiText, index, setCountryObjectIdList, updateInputValue]);
+    }, [containsEmojiRegex, countryName, emojiText, index, setCountryObjectIdList, updateRanking]);
 
     return <input className={styles.emoji_input} placeholder='🇪🇺' value={emojiText} onChange={handleEmojiInput} type='text'></input>;
 }

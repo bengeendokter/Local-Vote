@@ -1,0 +1,97 @@
+.ranking_list
+{
+    max-width: 28em;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    margin-block-start: 1em;
+    margin-block-end: 5.3em;
+}
+
+.country_container
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 0.3em;
+    padding-inline: 0.8em;
+    border: 1px solid var(--clr-text);
+}
+
+.country_container:last-of-type
+{
+    border-radius: var(--br-s) var(--br-s) var(--br-m) var(--br-m);
+}
+
+.country_container:first-of-type
+{
+    border-radius: var(--br-m) var(--br-m) var(--br-s) var(--br-s);
+}
+
+.country_content
+{
+    display: flex;
+    align-items: center;
+}
+
+.rank
+{
+    flex-grow: 0.5;
+    flex-shrink: 1.2;
+    text-align: end;
+    font-size: 1.4rem;
+}
+
+.emoji
+{
+    text-align: center;
+    font-size: 2.8rem;
+}
+
+.country_name
+{
+    flex-grow: 1;
+    flex-shrink: 0.5;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.points
+{
+    flex: 1 8.4 auto;
+    position: relative;
+    font-size: 1rem;
+    padding: 0.4em;
+    min-width: 3ch;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.points svg
+{
+    position: absolute;
+    top: -13%;
+    left: 14.4%;
+    width: 2.5em;
+}
+
+.button_container
+{
+    display: flex;
+    gap: 5em;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    padding: 0.4em;
+    background: linear-gradient(to bottom, rgba(248, 250, 234, 0) 0%, var(--clr-background) 100%);
+}
+
+.page_loading_container
+{
+    min-height: 32em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
