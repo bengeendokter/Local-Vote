@@ -43,21 +43,9 @@ function RankingDetail({ params }: RankingDetailProps)
 
     const calculateTotalRanking = React.useCallback(() =>
     {
-        const pointsMap = new Map<string, number>((rankingObject.ranking).map((country) => [country, 0]));
+        const pointsMap: [string, number][] = rankingObject.ranking.map((country, index) => [country, SCORE_MAP.get(index) ?? 0]);
 
-        rankingObject.ranking.forEach((country, index) =>
-        {
-            if(index >= SCORE_VALUES.length)
-            {
-                return;
-            }
-
-            const oldPoints = pointsMap.get(country) ?? 0;
-            const newPoints = oldPoints + (SCORE_MAP.get(index) ?? 0);
-            pointsMap.set(country, newPoints);
-        });
-
-        const rankingArray = Array.from(pointsMap.entries()).sort(([, points1], [, points2]) => points2 - points1);
+        const rankingArray = pointsMap.sort(([, points1], [, points2]) => points2 - points1);
         return rankingArray;
     }, [rankingObject]);
 

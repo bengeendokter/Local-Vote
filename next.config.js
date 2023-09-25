@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
+// @ts-check
 
 const withPWA = require("@ducanh2912/next-pwa").default({
     dest: "public",
-    cacheOnFrontendNav: true,
-    aggressiveFrontEndNavCaching: true,
   });
 
 const nextConfig = {
@@ -18,4 +17,5 @@ const nextConfig = {
     },
 };
 
+// @ts-ignore
 module.exports = withPWA(nextConfig);
