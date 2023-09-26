@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@ducanh2912/next-pwa':
-    specifier: ^9.5.0
-    version: 9.5.0(next@13.5.1)(webpack@5.88.2)
+    specifier: ^9.7.1
+    version: 9.7.1(next@13.5.1)(webpack@5.88.2)
   '@types/node':
     specifier: 20.5.9
     version: 20.5.9
@@ -1253,8 +1253,8 @@ packages:
       '@babel/helper-validator-identifier': 7.22.15
       to-fast-properties: 2.0.0
 
-  /@ducanh2912/next-pwa@9.5.0(next@13.5.1)(webpack@5.88.2):
-    resolution: {integrity: sha512-+c+Ni4A51Y+W3MWNG5l6OO629kfByEdiVR8TdqN2I3/cuFXzLzRwgKZZvXKV4ilemrzWm844hny5lP81RG18/Q==}
+  /@ducanh2912/next-pwa@9.7.1(next@13.5.1)(webpack@5.88.2):
+    resolution: {integrity: sha512-+JMTEXnV+TLmC9jvm0b8uOGcQLgPTXryDcPVofz2iilZHKMSh64AAh+0VYyQW30l4leezlBa9Y/PJjClvwkSSw==}
     peerDependencies:
       next: '>=11.0.0'
       webpack: '>=5.9.0'
