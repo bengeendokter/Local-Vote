@@ -35,36 +35,32 @@ const fetchEvent = () =>
 
         const requestURL = new URL(fetchEvent.request.url);
 
-        if(requestURL.pathname !== "/settings")
+        if(requestURL.pathname.startsWith("/ranking"))
         {
-            console.log("Fetch request is not for the settings page:", requestURL);
-            return fetch(fetchEvent.request);
-        }
+            console.log("startsWith /ranking");
+            const frontStrippedPathName = requestURL.pathname.replace("/ranking/", "").replace("/ranking", "");
 
-        fetchEvent.respondWith(
-            caches.match("/_next/static/chunks/app/settings/page-ed57b07c9493a9c6.js", { ignoreSearch: true }).then(function(response)
+
+            if(frontStrippedPathName.length === 0)
             {
-                console.log("respondWith: ", response);
-                if(response)
-                {
-                    // If the response is found in cache, extract the JavaScript code
-                    return response.text().then((jsCode) =>
-                    {
-
-                        console.log("before eval : ", response);
-                        // Evaluate the JavaScript code
-                        eval(jsCode);
-
-                        console.log("after eval : ", response);
-                        return response;
-                    });
-                }
-
-                console.log("last fetch");
-                // If the response is not in cache, fetch it
+                console.log("frontStrippedPathName.length === 0");
                 return fetch(fetchEvent.request);
-            })
-        );
+            }
+
+            if(requestURL.pathname.includes("edit"))
+            {
+                console.log("pathname.includes(edit)");
+                // TODO fetch generic cached edit page
+            }
+
+
+            fetchEvent.respondWith(
+                caches.match("/ranking").then((response) =>
+                {
+                    return response || fetch(fetchEvent.request);
+                })
+            );
+        }
     });
 };
 

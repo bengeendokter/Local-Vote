@@ -1,18 +1,19 @@
 "use client";
 
 import * as React from "react";
-import BackArrowIcon from "../_assets/icons/BackArrow.svg";
-import EditIcon from "../_assets/icons/Edit.svg";
-import DeleteIcon from "../_assets/icons/Delete.svg";
-import HeartIcon from "../_assets/icons/Heart.svg";
-import LoadingIcon from "../_components/LoadingIcon";
+import BackArrowIcon from "../../_assets/icons/BackArrow.svg";
+import EditIcon from "../../_assets/icons/Edit.svg";
+import DeleteIcon from "../../_assets/icons/Delete.svg";
+import HeartIcon from "../../_assets/icons/Heart.svg";
+import LoadingIcon from "../../_components/LoadingIcon";
 import { useRouter } from "next/navigation";
-import Button from "../_components/Button";
-import Header from "../_components/Header";
+import Button from "../../_components/Button";
+import Header from "../../_components/Header";
 import styles from "./detail.module.css";
-import { StoredRanking } from "../_types/storedRanking";
+import { StoredRanking } from "../../_types/storedRanking";
 import splitCountryInEmojiAndName from "./splitCountryInEmojiAndName";
-import LocalStorageKeys from "../_types/localStorageKeys";
+import LocalStorageKeys from "../../_types/localStorageKeys";
+import { usePathname } from "next/navigation";
 
 const SCORE_VALUES: number[] = [12, 10, 8, 7, 6, 5, 4, 3, 2, 1];
 const SCORE_MAP = new Map<number, number>(SCORE_VALUES.map((score, index) => [index, score]));
@@ -27,19 +28,24 @@ function RankingDetail({ params }: RankingDetailProps)
     const [rankingObject, setRankingObject] = React.useState<StoredRanking>({ title: "Loading...", ranking: [] });
     const [isPageLoading, setPageLoading] = React.useState(true);
 
+    const pathname = usePathname();
+    const urlId = pathname.replace("/ranking/", "").replace("/ranking", "");
+    console.log("urlId", urlId);
+    const rankingId = params.id.length !== 0 ? params.id : urlId;
+
     React.useEffect(() =>
     {
-        const storedRanking = localStorage.getItem(`${params.id}`);
+        const storedRanking = localStorage.getItem(`${rankingId}`);
         if(storedRanking === null)
         {
-            router.replace(`/${params.id}/not-found`);
+            router.replace(`/not-found`);
             return;
         }
 
         const storedRankingObject: StoredRanking = JSON.parse(storedRanking);
         setRankingObject(storedRankingObject);
         setPageLoading(false);
-    }, [params.id, router]);
+    }, [rankingId, router]);
 
     const calculateTotalRanking = React.useCallback(() =>
     {
@@ -59,16 +65,16 @@ function RankingDetail({ params }: RankingDetailProps)
         }
 
         const rankingIds: string[] = JSON.parse(localStorage.getItem(LocalStorageKeys.RANKING_IDS) ?? "[]");
-        const rankingIndex = rankingIds.findIndex((id) => id === params.id);
+        const rankingIndex = rankingIds.findIndex((id) => id === rankingId);
 
         if(rankingIndex !== -1)
         {
             localStorage.setItem(LocalStorageKeys.RANKING_IDS, JSON.stringify(rankingIds.toSpliced(rankingIndex, 1)));
         }
 
-        localStorage.removeItem(params.id);
+        localStorage.removeItem(rankingId);
         router.push("/");
-    }, [params.id, router]);
+    }, [rankingId, router]);
 
     return <>
         <Header>
@@ -86,19 +92,19 @@ function RankingDetail({ params }: RankingDetailProps)
                 <ol className={styles.ranking_list} >
                     {calculateTotalRanking().map(([country, points]) => { return { ...splitCountryInEmojiAndName(country), points }; }).map(({ emoji, name, points }, index) => <>
                         <li className={styles.country_container} key={index} >
-                            <div className={styles.country_content} >
-                                <div className={styles.rank} >{index + 1}.</div>
-                                <div className={styles.emoji}>{emoji}</div>
-                                <div className={styles.country_name}>{name}</div>
+                            <div key={"country_content" + index} className={styles.country_content} >
+                                <div key={"rank" + index} className={styles.rank} >{index + 1}.</div>
+                                <div key={"emoji" + index} className={styles.emoji}>{emoji}</div>
+                                <div key={"country_name" + index} className={styles.country_name}>{name}</div>
                             </div>
-                            <div className={styles.points}>{points !== 0 && <HeartIcon />}{points !== 0 && points}</div>
+                            <div key={"points" + index} className={styles.points}>{points !== 0 && <HeartIcon />}{points !== 0 && points}</div>
                         </li>
                     </>)}
                 </ol>
             }
         </main>
         <div className={styles.button_container} >
-            <Button href={`/${params.id}/edit`}><EditIcon /></Button>
+            <Button href={`/ranking/${rankingId}/edit`}><EditIcon /></Button>
             <Button onClick={handelDeleteRanking} ><DeleteIcon /></Button>
         </div>
     </>;

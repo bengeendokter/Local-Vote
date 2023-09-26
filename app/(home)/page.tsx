@@ -42,7 +42,7 @@ function Home()
         const oldIds: string[] = JSON.parse(localStorage.getItem(LocalStorageKeys.RANKING_IDS) ?? "[]");
         const newIds = oldIds.concat(rankingId);
         localStorage.setItem(LocalStorageKeys.RANKING_IDS, JSON.stringify(newIds));
-        router.push(`/${rankingId}/edit`);
+        router.push(`/ranking/${rankingId}/edit`);
     }, [router]);
 
     return <>
@@ -52,7 +52,7 @@ function Home()
         </Header>
         <main className={styles.main} >
             {
-                rankings.map((id: string) => { return { id, ...JSON.parse(localStorage.getItem(id) ?? "{}") }; }).filter((rankingObject: StoredRankingWithId) => rankingObject.title !== undefined).map(({ id, title }: StoredRankingWithId) => <><Button className={styles.ranking_link} key={id} href={`/${id}`}>{title}</Button></>)}
+                rankings.map((id: string) => { return { id, ...JSON.parse(localStorage.getItem(id) ?? "{}") }; }).filter((rankingObject: StoredRankingWithId) => rankingObject.title !== undefined).map(({ id, title }: StoredRankingWithId) => <><Button className={styles.ranking_link} key={id} href={`/ranking/${id}`}>{title}</Button></>)}
             <Button onClick={handelAddRanking} ><AddIcon /></Button>
         </main> </>;
 }
